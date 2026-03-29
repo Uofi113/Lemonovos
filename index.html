@@ -112,13 +112,13 @@
         .changelog-title { font-weight: bold; font-size: 1.1rem; margin: 5px 0; }
         .changelog-body { font-size: 0.9rem; color: var(--text-dim); line-height: 1.4; }
 
-        .terminal-window { background: #000; color: #fff; font-family: 'Courier New', Courier, monospace; padding: 15px; border-radius: 10px; border: 1px solid #333; box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin: 40px 0; font-size: 0.75rem; min-height: 180px; opacity: 0; transform: translateY(20px); transition: all 0.8s ease; }
+        .terminal-window { background: #000; color: #fff; font-family: 'Courier New', Courier, monospace; padding: 15px; border-radius: 10px; border: 1px solid #333; box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin: 40px 0; font-size: 0.7rem; min-height: 250px; opacity: 0; transform: translateY(20px); transition: all 0.8s ease; line-height: 1.2;}
         .terminal-window.visible { opacity: 1; transform: translateY(0); }
         .term-header { display: flex; gap: 6px; margin-bottom: 15px; }
         .dot { width: 12px; height: 12px; border-radius: 50%; }
         .red { background: #ff5f56; } .yellow { background: #ffbd2e; } .green { background: #27c93f; }
-        .term-content { white-space: pre-wrap; word-wrap: break-word; }
-        .cursor { display: inline-block; width: 8px; height: 15px; background: var(--accent); animation: blink 1s infinite; vertical-align: middle; margin-left: 2px;}
+        .term-content { white-space: pre; display: block; }
+        .cursor { display: inline-block; width: 8px; height: 14px; background: var(--accent); animation: blink 1s infinite; vertical-align: middle;}
         @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
 
         @media (min-width: 600px) {
@@ -128,7 +128,7 @@
             .container { margin-top: 120px; }
             section { padding: 40px; }
             .btn { display: inline-block; padding: 15px 30px; }
-            .terminal-window { font-size: 0.9rem; }
+            .terminal-window { font-size: 0.85rem; }
         }
     </style>
 </head>
@@ -197,7 +197,7 @@
             <div class="dot yellow"></div>
             <div class="dot green"></div>
         </div>
-        <span class="term-content" id="term-text"></span><span class="cursor"></span>
+        <div class="term-content" id="term-text"></div><span class="cursor"></span>
     </div>
 </div>
 
@@ -216,19 +216,9 @@
     window.addEventListener('DOMContentLoaded', handleRoute);
 
     const themeBtn = document.getElementById('theme-checkbox');
-    const themeImages = document.querySelectorAll('.theme-img');
-
-    function updateImages(theme) {
-        themeImages.forEach(img => {
-            const src = img.getAttribute(`data-${theme}`);
-            if(src) img.src = src;
-        });
-    }
-    
     if (localStorage.getItem('theme') === 'light') {
         document.documentElement.setAttribute('data-theme', 'light');
         themeBtn.checked = true;
-        updateImages('light');
     }
 
     themeBtn.addEventListener('change', () => {
@@ -239,7 +229,6 @@
             document.documentElement.removeAttribute('data-theme');
         }
         localStorage.setItem('theme', theme);
-        updateImages(theme);
     });
 
     function formatTitle(t) {
@@ -267,7 +256,20 @@
     }
     getChangelog();
 
-    const termData = `[dibil@lemonovos ~]$ fastfetch\n\n       .PL.        OS: LemonovOS v0.8.2\n      .P..L.       Kernel: Zen-kernel\n     .P....L.      Shell: zsh\n    .P......L.     WM: KDE Plasma\n   .P........L.    Config: /home/dibil/lemonovos/airootfs/etc/fastfetch/config.jsonc\n  ............     Logo: /home/dibil/lemonovos/airootfs/etc/fastfetch/logo.txt\n`;
+    const termData = `[dibil@lemonovos ~]$ fastfetch
+
+X          X         OS: LemonovOS v0.8.2
+XX         XXX       Kernel: Zen-kernel
+ XX         X XX     Shell: zsh
+  XX        X  XX    WM: KDE Plasma
+   XX       X   XX   ASCII: logo.txt
+    XX      X     XX Config: config.jsonc
+     XXX    X      XX
+       XX   X       XX
+        XX  X
+         XXX
+          X
+`;
     
     let i = 0;
     const termBox = document.getElementById('term-text');
@@ -276,9 +278,9 @@
 
     function typeTerm() {
         if (i < termData.length) {
-            termBox.innerHTML += termData.charAt(i) === '\\n' ? '<br>' : termData.charAt(i);
+            termBox.textContent += termData.charAt(i);
             i++;
-            setTimeout(typeTerm, 15);
+            setTimeout(typeTerm, 10);
         }
     }
 
@@ -286,7 +288,7 @@
         if (!typingStarted && (window.innerHeight + window.scrollY) >= document.body.offsetHeight - 150) {
             typingStarted = true;
             termDiv.classList.add('visible');
-            setTimeout(typeTerm, 800);
+            setTimeout(typeTerm, 500);
         }
     });
 </script>
