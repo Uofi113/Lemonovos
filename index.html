@@ -6,7 +6,6 @@
     <title>LemonovOS | Official</title>
     <style>
         :root {
-            
             --bg: #0a192f;
             --card: rgba(17, 34, 64, 0.8);
             --accent: #64ffda;
@@ -93,68 +92,20 @@
             text-transform: uppercase; letter-spacing: 1px;
         }
 
-        .container { 
-            max-width: 900px; 
-            margin: 80px auto 20px; 
-            padding: 0 15px; 
-        }
-
-        section {
-            display: none; background: var(--card);
-            padding: 25px 20px; border-radius: 12px;
-            border: 1px solid var(--border);
-            animation: fadeIn 0.4s ease;
-            word-wrap: break-word;
-        }
-
+        /* Остальные стили */
+        .container { max-width: 900px; margin: 100px auto 20px; padding: 0 15px; }
+        section { display: none; background: var(--card); padding: 30px; border-radius: 12px; border: 1px solid var(--border); animation: fadeIn 0.4s ease; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        h1 { color: var(--accent); font-size: 1.8rem; margin-top: 0; }
-
-        .gallery {
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 15px; margin: 20px 0;
-        }
-
-        .gallery-item {
-            border-radius: 10px; overflow: hidden;
-            border: 1px solid var(--border); 
-            background: var(--bg);
-        }
-
-        .gallery-item img { 
-            width: 100%; 
-            height: auto; 
-            max-height: 250px;
-            object-fit: cover; 
-            display: block;
-        }
-
-        .label { 
-            padding: 12px; 
-            text-align: center; 
-            font-size: 0.8rem; 
-            color: var(--text-dim);
-            background-color: var(--bg);
-            transition: 0.3s ease;
-        }
-
-        .btn {
-            display: block; text-align: center;
-            padding: 12px; border: 2px solid var(--accent); 
-            color: var(--accent); text-decoration: none; 
-            border-radius: 6px; font-weight: bold; margin-top: 10px;
-        }
-
-        @media (min-width: 600px) {
-            h1 { font-size: 2.5rem; }
-            nav { gap: 30px; padding: 22px; }
-            nav a { font-size: 12px; letter-spacing: 2px; }
-            .container { margin-top: 120px; }
-            section { padding: 40px; }
-            .btn { display: inline-block; padding: 15px 30px; }
-        }
+        h1 { color: var(--accent); font-size: 2.5rem; margin-top: 0; }
+        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin: 30px 0; }
+        .feature-card { padding: 20px; background: var(--bg); border-radius: 8px; border: 1px solid var(--border); }
+        .feature-card h3 { color: var(--accent); margin-top: 0; }
+        .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin: 20px 0; }
+        .gallery-item { border-radius: 10px; overflow: hidden; border: 1px solid var(--border); background: var(--bg); }
+        .gallery-item img { width: 100%; height: auto; display: block; }
+        .label { padding: 12px; text-align: center; font-size: 0.8rem; color: var(--text-dim); }
+        .btn { display: inline-block; padding: 12px 24px; border: 2px solid var(--accent); color: var(--accent); text-decoration: none; border-radius: 6px; font-weight: bold; transition: 0.3s; }
+        .btn:hover { background: var(--accent); color: var(--bg); }
     </style>
 </head>
 <body>
@@ -177,34 +128,45 @@
         <h1>LemonovOS</h1>
         <p>Производительная система на базе Arch Linux. Минимум фоновых процессов, максимум контроля.</p>
         
+        <div class="features">
+            <div class="feature-card">
+                <h3>Скорость</h3>
+                <p>Оптимизированные флаги компиляции и отсутствие лишнего мусора в автозагрузке.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Ядро</h3>
+                <p>Использование Zen-kernel для лучшей отзывчивости интерфейса под нагрузкой.</p>
+            </div>
+            <div class="feature-card">
+                <h3>KDE Plasma</h3>
+                <p>Кастомная настройка окружения, сочетающая эстетику и функциональность.</p>
+            </div>
+        </div>
+
         <div class="gallery">
             <div class="gallery-item">
-                <img src="img/desktop-dark.jpg" class="theme-img" alt="Desktop" data-dark="img/desktop-dark.jpg" data-light="img/desktop-light.jpg">
+                <img src="img/desktop-dark.jpg" alt="Desktop">
                 <div class="label">Окружение системы</div>
             </div>
             <div class="gallery-item">
-                <img src="img/terminal-dark.png" class="theme-img" alt="Terminal" data-dark="img/terminal-dark.png" data-light="img/terminal-light.png">
+                <img src="img/terminal-dark.png" alt="Terminal">
                 <div class="label">Lemonov Fastfetch</div>
             </div>
         </div>
     </section>
 
     <section id="download">
-        <h1>Скачать</h1>
-        <p>Статус: <b>0.8.2 Unstable</b></p>
-        <a class="btn" style="opacity: 0.5; pointer-events: none;">Скоро</a>
-        <a href="https://t.me/lemonovos" class="btn" target="_blank">Telegram</a>
+        <h1>Загрузка</h1>
+        <p>Текущая версия: <b>0.8.2 Unstable</b></p>
+        <p>Перед установкой ознакомьтесь с инструкциями в нашем канале.</p>
+        <a href="https://t.me/lemonovos" class="btn" target="_blank">Перейти в Telegram</a>
     </section>
 
     <section id="changelog">
         <h1>Дневник разработки</h1>
-        <div id="issues-container">Загрузка данных...</div>
+        <div id="issues-container">Загрузка изменений...</div>
     </section>
 </div>
-
-<footer style="padding: 30px 15px; text-align: center; color: var(--text-dim); font-size: 0.75rem;">
-    &copy; 2026 LemonovOS. Created by Uofi113
-</footer>
 
 <script>
     function handleRoute() {
@@ -217,19 +179,9 @@
     window.addEventListener('DOMContentLoaded', handleRoute);
 
     const themeBtn = document.getElementById('theme-checkbox');
-    const themeImages = document.querySelectorAll('.theme-img');
-
-    function updateImages(theme) {
-        themeImages.forEach(img => {
-            const src = img.getAttribute(`data-${theme}`);
-            if(src) img.src = src;
-        });
-    }
-    
     if (localStorage.getItem('theme') === 'light') {
         document.documentElement.setAttribute('data-theme', 'light');
         themeBtn.checked = true;
-        updateImages('light');
     }
 
     themeBtn.addEventListener('change', () => {
@@ -240,14 +192,12 @@
             document.documentElement.removeAttribute('data-theme');
         }
         localStorage.setItem('theme', theme);
-        updateImages(theme);
     });
 
-    /* Функция форматирования заголовков Issue (твои кружки) */
     function formatTitle(t) {
-        if (t.startsWith('+')) return '🟢 ' + t.slice(1).trim();
-        if (t.startsWith('-')) return '🔴 ' + t.slice(1).trim();
-        if (t.startsWith('*')) return '🔵 ' + t.slice(1).trim();
+        if (t.includes('+')) return '🟢 ' + t.replace('+', '').trim();
+        if (t.includes('-')) return '🔴 ' + t.replace('-', '').trim();
+        if (t.includes('*')) return '🔵 ' + t.replace('*', '').trim();
         return '⚪ ' + t;
     }
 
@@ -256,16 +206,13 @@
         try {
             const r = await fetch('https://api.github.com/repos/Uofi113/Lemonovos/issues?state=open');
             const data = await r.json();
-            box.innerHTML = data.map(i => {
-                const cleanBody = (i.body || '').replace(/\r/g, '').replace(/\n/g, '<br>'); // Убираем перенос строк
-                return `
+            box.innerHTML = data.map(i => `
                 <div style="border-left: 3px solid var(--accent); padding: 10px 15px; margin-bottom: 25px; background: rgba(100, 255, 218, 0.05);">
                     <div style="color: var(--accent); font-size: 0.8rem;">${new Date(i.created_at).toLocaleDateString()}</div>
                     <div style="font-weight: bold; font-size: 1.1rem; margin: 5px 0;">${formatTitle(i.title)}</div>
-                    <div style="font-size: 0.9rem; color: var(--text-dim); line-height: 1.4;">${cleanBody}</div>
-                </div>`;
-            }).join('');
-        } catch(e) { box.innerHTML = 'Ошибка синхронизации.'; }
+                    <div style="font-size: 0.9rem; color: var(--text-dim);">${i.body || ''}</div>
+                </div>`).join('');
+        } catch(e) { box.innerHTML = 'Ошибка загрузки данных.'; }
     }
     getChangelog();
 </script>
