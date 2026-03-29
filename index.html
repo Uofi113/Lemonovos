@@ -19,10 +19,10 @@
 
         [data-theme="light"] {
             /* Нежно-банановая тема */
-            --bg: #fff9e6; /* Мягкий банановый фон */
+            --bg: #fff9e6;
             --card: #ffffff;
-            --accent: #d4a017; /* Золотисто-банановый акцент */
-            --text: #4a4028; /* Темно-коричневый текст для контраста */
+            --accent: #d4a017;
+            --text: #4a4028;
             --text-dim: #7d735a;
             --nav: rgba(255, 249, 230, 0.9);
             --border: rgba(212, 160, 23, 0.2);
@@ -167,11 +167,11 @@
         
         <div class="gallery">
             <div class="gallery-item">
-                <img src="img/desktop.png" alt="Desktop">
+                <img src="img/desktop-dark.jpg" class="theme-img" alt="Desktop" data-dark="img/desktop-dark.jpg" data-light="img/desktop-light.jpg">
                 <div class="label">Окружение системы</div>
             </div>
             <div class="gallery-item">
-                <img src="img/terminal.png" alt="Terminal">
+                <img src="img/terminal-dark.png" class="theme-img" alt="Terminal" data-dark="img/terminal-dark.png" data-light="img/terminal-light.png">
                 <div class="label">Lemonov Fastfetch</div>
             </div>
         </div>
@@ -207,19 +207,32 @@
     window.addEventListener('DOMContentLoaded', handleRoute);
 
     const themeBtn = document.getElementById('theme-checkbox');
+    const themeImages = document.querySelectorAll('.theme-img'); // Все динамические картинки
+
+    // Функция обновления скриншотов
+    function updateImages(theme) {
+        themeImages.forEach(img => {
+            img.src = img.getAttribute(`data-${theme}`);
+        });
+    }
     
+    // Проверка сохраненной темы при загрузке
     if (localStorage.getItem('theme') === 'light') {
         document.documentElement.setAttribute('data-theme', 'light');
         themeBtn.checked = true;
+        updateImages('light'); // Сразу ставим светлые скрины
     }
 
+    // Слушатель переключателя
     themeBtn.addEventListener('change', () => {
         if (themeBtn.checked) {
             document.documentElement.setAttribute('data-theme', 'light');
             localStorage.setItem('theme', 'light');
+            updateImages('light'); // Меняем скрины на светлые
         } else {
             document.documentElement.removeAttribute('data-theme');
             localStorage.setItem('theme', 'dark');
+            updateImages('dark'); // Меняем скрины на тёмные
         }
     });
 
