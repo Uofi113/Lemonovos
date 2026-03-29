@@ -107,23 +107,26 @@
         
         .btn { display: block; text-align: center; padding: 12px; border: 2px solid var(--accent); color: var(--accent); text-decoration: none; border-radius: 6px; font-weight: bold; margin-top: 10px; }
         
-        .changelog-item { border-left: 3px solid var(--accent); padding: 10px 15px; margin-bottom: 25px; background: rgba(100, 255, 218, 0.05); }
-        .changelog-date { color: var(--accent); font-size: 0.8rem; }
-        .changelog-title { font-weight: bold; font-size: 1.1rem; margin: 5px 0; }
-        .changelog-body { font-size: 0.9rem; color: var(--text-dim); line-height: 1.4; }
-
-        .terminal-window { background: #000; color: #fff; font-family: 'Courier New', Courier, monospace; padding: 15px; border-radius: 10px; border: 1px solid #333; box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin: 40px 0; font-size: 0.7rem; min-height: 250px; opacity: 0; transform: translateY(20px); transition: all 0.8s ease; line-height: 1.2;}
-        .terminal-window.visible { opacity: 1; transform: translateY(0); }
-        .term-header { display: flex; gap: 6px; margin-bottom: 15px; }
-        .dot { width: 12px; height: 12px; border-radius: 50%; }
-        .red { background: #ff5f56; } .yellow { background: #ffbd2e; } .green { background: #27c93f; }
-        
         .term-content { 
             white-space: pre; 
             display: block; 
             font-family: 'Courier New', Courier, monospace;
-            font-size: 1.5vw; 
+            /* clamp(минимум, текущий_размер, максимум) */
+            font-size: clamp(8px, 2.2vw, 14px); 
             line-height: 1.2;
+            overflow-x: hidden;
+        }
+
+        @media (min-width: 600px) {
+            .term-content { font-size: 0.9rem; } /* На ПК будет четко и крупно */
+        }
+
+        @media (max-width: 599px) {
+            .term-content { 
+                font-size: 2.5vw; /* Увеличил с 1.6vw до 2.5vw */
+                line-height: 1.1; 
+            }
+            .terminal-window { padding: 8px; min-height: 180px; }
         }
 
         @media (min-width: 600px) {
