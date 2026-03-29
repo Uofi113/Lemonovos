@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LemonovOS | Официальный сайт</title>
+    <title>LemonovOS | Official</title>
     <style>
         :root {
-            /* Темная тема (основная) */
+            /* Темная тема */
             --bg: #0a192f;
             --card: rgba(17, 34, 64, 0.8);
             --accent: #64ffda;
@@ -14,7 +14,7 @@
             --text-dim: #8892b0;
             --nav: rgba(10, 25, 47, 0.9);
             --border: rgba(100, 255, 218, 0.1);
-            --btn-disabled: #233554;
+            --toggle-bg: #112240;
         }
 
         [data-theme="light"] {
@@ -25,7 +25,7 @@
             --text-dim: #4a5568;
             --nav: rgba(255, 255, 255, 0.9);
             --border: rgba(0, 119, 255, 0.2);
-            --btn-disabled: #dae1e7;
+            --toggle-bg: #cbd5e0;
         }
 
         body {
@@ -33,206 +33,206 @@
             background-color: var(--bg);
             color: var(--text);
             margin: 0;
-            transition: 0.3s;
+            transition: 0.3s ease;
             line-height: 1.6;
         }
 
-        nav {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-            padding: 15px;
-            background: var(--nav);
-            backdrop-filter: blur(10px);
+        /* Ползунок темы */
+        .theme-switch-wrapper {
             position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
+            top: 20px;
+            right: 25px;
+            z-index: 1100;
+        }
+
+        .theme-switch {
+            display: inline-block;
+            height: 34px;
+            position: relative;
+            width: 70px;
+        }
+
+        .theme-switch input { display: none; }
+
+        .slider {
+            background-color: var(--toggle-bg);
+            bottom: 0; cursor: pointer; left: 0;
+            position: absolute; right: 0; top: 0;
+            transition: .4s; border-radius: 34px;
+            display: flex; align-items: center;
+            justify-content: space-between; padding: 0 8px;
+            border: 1px solid var(--border);
+        }
+
+        .slider:before {
+            background-color: var(--accent);
+            bottom: 4px; content: ""; height: 26px;
+            left: 4px; position: absolute; transition: .4s;
+            width: 26px; border-radius: 50%; z-index: 2;
+        }
+
+        input:checked + .slider:before { transform: translateX(36px); }
+        .slider .icon { font-size: 16px; z-index: 1; user-select: none; }
+
+        nav {
+            display: flex; justify-content: center; gap: 30px;
+            padding: 22px; background: var(--nav);
+            backdrop-filter: blur(10px); position: fixed;
+            width: 100%; top: 0; z-index: 1000;
             border-bottom: 1px solid var(--border);
         }
 
         nav a {
-            color: var(--text);
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            color: var(--text); text-decoration: none;
+            font-size: 12px; font-weight: bold;
+            text-transform: uppercase; letter-spacing: 2px;
         }
 
-        #theme-toggle {
-            background: none;
-            border: 1px solid var(--accent);
-            color: var(--accent);
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 12px;
-        }
-
-        .container { max-width: 900px; margin: 100px auto 50px; padding: 0 20px; }
+        .container { max-width: 900px; margin: 120px auto 60px; padding: 0 20px; }
 
         section {
-            display: none;
-            background: var(--card);
-            padding: 40px;
-            border-radius: 20px;
+            display: none; background: var(--card);
+            padding: 40px; border-radius: 15px;
             border: 1px solid var(--border);
             animation: fadeIn 0.4s ease;
         }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        h1 { color: var(--accent); font-size: 2.8rem; margin: 0; }
-        
-        /* Галерея: 2 больших плитки */
+        h1 { color: var(--accent); font-size: 2.5rem; margin-top: 0; }
+
         .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 20px;
-            margin: 30px 0;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px; margin: 30px 0;
         }
 
         .gallery-item {
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid var(--border);
-            background: #000;
-            transition: 0.3s;
+            border-radius: 10px; overflow: hidden;
+            border: 1px solid var(--border); background: #000;
         }
 
-        .gallery-item:hover { transform: translateY(-5px); border-color: var(--accent); }
-
-        .gallery-item img { width: 100%; height: 220px; object-fit: cover; display: block; opacity: 0.8; }
+        .gallery-item img { width: 100%; height: 220px; object-fit: cover; opacity: 0.8; transition: 0.3s; }
         .gallery-item:hover img { opacity: 1; }
-
-        .label { padding: 10px; text-align: center; font-size: 0.9rem; color: var(--text-dim); }
+        .label { padding: 12px; text-align: center; font-size: 0.85rem; color: var(--text-dim); }
 
         .btn {
-            display: inline-block;
-            padding: 15px 30px;
-            border: 2px solid var(--accent);
-            color: var(--accent);
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            margin-top: 20px;
+            display: inline-block; padding: 15px 30px;
+            border: 2px solid var(--accent); color: var(--accent);
+            text-decoration: none; border-radius: 4px;
+            font-weight: bold; margin-top: 10px;
         }
 
-        .btn.disabled { border-color: var(--btn-disabled); color: var(--text-dim); opacity: 0.5; pointer-events: none; }
+        .btn.disabled { border-color: var(--text-dim); color: var(--text-dim); opacity: 0.4; pointer-events: none; }
 
-        .changelog-item { border-left: 3px solid var(--accent); padding-left: 20px; margin-bottom: 30px; }
-        .date { color: var(--accent); font-family: monospace; font-size: 0.9rem; }
-        .issue-title { font-weight: bold; font-size: 1.2rem; margin: 5px 0; }
+        /* Фикс дневника */
+        .changelog-item {
+            border-left: 3px solid var(--accent);
+            padding: 10px 20px; margin-bottom: 40px;
+            background: rgba(100, 255, 218, 0.03);
+        }
+        .date { color: var(--accent); font-family: monospace; font-size: 0.9rem; margin-bottom: 5px; }
+        .issue-title { font-weight: bold; font-size: 1.3rem; margin-bottom: 10px; }
+        .issue-body { white-space: pre-wrap; color: var(--text-dim); }
     </style>
 </head>
 <body>
 
+<div class="theme-switch-wrapper">
+    <label class="theme-switch">
+        <input type="checkbox" id="theme-checkbox">
+        <div class="slider">
+            <span class="icon">🌙</span>
+            <span class="icon">☀️</span>
+        </div>
+    </label>
+</div>
+
 <nav>
-    <a href="#about">О проекте</a>
-    <a href="#download">Скачка</a>
+    <a href="#about">Проект</a>
+    <a href="#download">Загрузка</a>
     <a href="#changelog">Дневник</a>
-    <button id="theme-toggle">Сменить тему</button>
 </nav>
 
 <div class="container">
     <section id="about">
         <h1>LemonovOS</h1>
-        <p>Сборка Arch Linux, в которой нет ничего лишнего. Только мощь и лемоны.</p>
+        <p>Производительная система на базе Arch Linux. Минимум фоновых процессов, максимум контроля.</p>
         
         <div class="gallery">
             <div class="gallery-item">
-                <img src="img/desktop.png" alt="Рабочий стол">
-                <div class="label">Окружение (KDE/GNOME)</div>
+                <img src="img/desktop.png" alt="Desktop">
+                <div class="label">Окружение системы</div>
             </div>
             <div class="gallery-item">
-                <img src="img/terminal.png" alt="Терминал">
-                <div class="label">Фирменный Fastfetch</div>
+                <img src="img/terminal.png" alt="Terminal">
+                <div class="label">Lemonov Fastfetch</div>
             </div>
         </div>
-
-        <h2>Почему LemonovOS?</h2>
-        <ul style="color: var(--text-dim);">
-            <li>Минимальный вес образа</li>
-            <li>Автоматический конфиг GRUB</li>
-            <li>Никакого bloatware (мусора)</li>
-        </ul>
     </section>
 
     <section id="download">
-        <h1>Загрузка</h1>
-        <p>Последняя версия: <b>0.8.1 Unstable</b></p>
-        <a class="btn disabled">Скачать ISO (Скоро)</a>
+        <h1>Скачать</h1>
+        <p>Статус: <b>0.8.2 Unstable</b></p>
+        <a class="btn disabled">Скачать ISO</a>
         <a href="https://t.me/lemonovos" class="btn" target="_blank">Telegram</a>
     </section>
 
     <section id="changelog">
         <h1>Дневник разработки</h1>
-        <div id="issues-container">Загрузка данных...</div>
+        <div id="issues-container">Загрузка логов...</div>
     </section>
 </div>
 
 <script>
-    // Логика навигации
-    function route() {
+    function handleRoute() {
         const hash = window.location.hash || '#about';
         document.querySelectorAll('section').forEach(s => s.style.display = 'none');
         const target = document.querySelector(hash);
         if (target) target.style.display = 'block';
     }
-    window.addEventListener('hashchange', route);
-    window.addEventListener('DOMContentLoaded', route);
+    window.addEventListener('hashchange', handleRoute);
+    window.addEventListener('DOMContentLoaded', handleRoute);
 
-    // Переключатель тем
-    const toggle = document.getElementById('theme-toggle');
-    const body = document.documentElement;
-    
-    // Проверяем сохраненную тему
+    // Тема
+    const themeBtn = document.getElementById('theme-checkbox');
     if (localStorage.getItem('theme') === 'light') {
-        body.setAttribute('data-theme', 'light');
+        document.documentElement.setAttribute('data-theme', 'light');
+        themeBtn.checked = true;
     }
-
-    toggle.addEventListener('click', () => {
-        if (body.hasAttribute('data-theme')) {
-            body.removeAttribute('data-theme');
-            localStorage.setItem('theme', 'dark');
-        } else {
-            body.setAttribute('data-theme', 'light');
+    themeBtn.addEventListener('change', () => {
+        if (themeBtn.checked) {
+            document.documentElement.setAttribute('data-theme', 'light');
             localStorage.setItem('theme', 'light');
+        } else {
+            document.documentElement.removeAttribute('data-theme');
+            localStorage.setItem('theme', 'dark');
         }
     });
 
-    // Система кружочков и Дневник
-    function formatTitle(title) {
-        if (title.startsWith('+')) return '🟢 ' + title.substring(1).trim();
-        if (title.startsWith('-')) return '🔴 ' + title.substring(1).trim();
-        if (title.startsWith('!')) return '🟡 ' + title.substring(1).trim();
-        if (title.startsWith('*')) return '🔵 ' + title.substring(1).trim();
-        return '⚪ ' + title;
+    function formatTitle(t) {
+        if (t.startsWith('+')) return '🟢 ' + t.slice(1).trim();
+        if (t.startsWith('-')) return '🔴 ' + t.slice(1).trim();
+        if (t.startsWith('*')) return '🔵 ' + t.slice(1).trim();
+        return '⚪ ' + t;
     }
 
-    async function fetchIssues() {
-        const container = document.getElementById('issues-container');
+    async function getChangelog() {
+        const box = document.getElementById('issues-container');
         try {
-            const res = await fetch('https://api.github.com/repos/Uofi113/Lemonovos/issues?state=open&creator=Uofi113');
-            const data = await res.json();
-            if (!data.length) { container.innerHTML = 'Новостей пока нет.'; return; }
-            
-            container.innerHTML = data.map(i => {
+            const r = await fetch('https://api.github.com/repos/Uofi113/Lemonovos/issues?state=open');
+            const data = await r.json();
+            box.innerHTML = data.map(i => {
                 const d = new Date(i.created_at);
-                const date = d.toLocaleDateString();
-                const time = d.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
                 return `
                 <div class="changelog-item">
-                    <div class="date">${date} в ${time}</div>
+                    <div class="date">${d.toLocaleDateString()} в ${d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</div>
                     <div class="issue-title">${formatTitle(i.title)}</div>
-                    <div style="color: var(--text-dim)">${i.body}</div>
+                    <div class="issue-body">${i.body}</div>
                 </div>`;
             }).join('');
-        } catch (e) { container.innerHTML = 'Ошибка загрузки.'; }
+        } catch(e) { box.innerHTML = 'Ошибка синхронизации.'; }
     }
-    fetchIssues();
+    getChangelog();
 </script>
 </body>
 </html>
