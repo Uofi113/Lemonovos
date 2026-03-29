@@ -12,6 +12,7 @@
             --text-main: #ccd6f6;
             --text-dim: #8892b0;
             --nav-bg: rgba(10, 25, 47, 0.9);
+            --disabled-color: #444e5e; /* Цвет для неактивной кнопки */
         }
 
         body {
@@ -81,11 +82,24 @@
             font-weight: bold;
             transition: 0.3s;
             margin: 10px 10px 10px 0;
+            cursor: pointer;
         }
 
         .btn:hover { background: rgba(100, 255, 218, 0.1); box-shadow: 0 0 20px rgba(100, 255, 218, 0.2); }
 
-        /* Стили для Ченджлога из GitHub */
+        /* Стили для деактивированной кнопки */
+        .btn.disabled {
+            border-color: var(--disabled-color);
+            color: var(--text-dim);
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none; /* Клик не сработает */
+        }
+        .btn.disabled:hover {
+            background: transparent;
+            box-shadow: none;
+        }
+
         .changelog-item { border-left: 2px solid var(--accent-color); padding-left: 20px; margin-bottom: 30px; }
         .date { color: var(--accent-color); font-weight: bold; font-family: monospace; font-size: 0.9rem; }
         .issue-title { color: var(--text-main); font-weight: bold; margin: 5px 0; font-size: 1.2rem; }
@@ -114,7 +128,8 @@
     <section id="download">
         <h1>Загрузка</h1>
         <p>Текущий билд: <b>0.8.1 Unstable</b></p>
-        <a class="btn disabled">Скачать ISO (Скоро)</a>
+        
+        <a class="btn disabled">Скачать ISO (Скоро)</a> 
         <a href="https://t.me/lemonovos" class="btn" target="_blank">Telegram</a>
     </section>
 
@@ -129,17 +144,15 @@
 </footer>
 
 <script>
-    // Навигация
     window.addEventListener('hashchange', () => {
         if(!window.location.hash) return;
         document.querySelectorAll('section').forEach(s => s.style.display = 'none');
         document.querySelector(window.location.hash).style.display = 'block';
     });
 
-    // "Админка" через GitHub Issues
     async function fetchChangelog() {
         const user = 'Uofi113'; 
-        const repo = 'Lemonovos';
+        const repo = 'LemonovOS';
         const container = document.getElementById('issues-container');
 
         try {
