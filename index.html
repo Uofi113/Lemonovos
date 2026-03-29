@@ -6,7 +6,7 @@
     <title>LemonovOS | Official</title>
     <style>
         :root {
-
+            /* Темная тема (твоя, с '#122a4d' для ползунка) */
             --bg: #0a192f;
             --card: rgba(17, 34, 64, 0.8);
             --accent: #64ffda;
@@ -14,10 +14,11 @@
             --text-dim: #8892b0;
             --nav: rgba(10, 25, 47, 0.95);
             --border: rgba(100, 255, 218, 0.1);
-            --toggle-bg: #112240;
+            --toggle-bg: #122a4d; /* Вот твой цвет для тёмной темы */
         }
 
         [data-theme="light"] {
+            /* Светлая тема */
             --bg: #fff9e6;
             --card: #ffffff;
             --accent: #d4a017;
@@ -35,7 +36,7 @@
             margin: 0;
             transition: 0.3s ease;
             line-height: 1.5;
-            overflow-x: hidden; /* Важно для мобилок, чтобы не было горизонтального скролла */
+            overflow-x: hidden;
         }
 
         .theme-switch-wrapper {
@@ -103,14 +104,13 @@
             padding: 25px 20px; border-radius: 12px;
             border: 1px solid var(--border);
             animation: fadeIn 0.4s ease;
-            word-wrap: break-word; /* Чтобы длинные строки не ломали верстку на iOS */
+            word-wrap: break-word;
         }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         h1 { color: var(--accent); font-size: 1.8rem; margin-top: 0; }
 
-        /* Адаптивная сетка карточек */
         .gallery {
             display: grid; 
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -126,7 +126,7 @@
         .gallery-item img { 
             width: 100%; 
             height: auto; 
-            max-height: 250px; /* Чтобы скриншоты не были гигантскими на мобиле */
+            max-height: 250px;
             object-fit: cover; 
             display: block;
         }
@@ -147,7 +147,6 @@
             border-radius: 6px; font-weight: bold; margin-top: 10px;
         }
 
-        /* Медиа-запросы для больших экранов */
         @media (min-width: 600px) {
             h1 { font-size: 2.5rem; }
             nav { gap: 30px; padding: 22px; }
@@ -244,17 +243,28 @@
         updateImages(theme);
     });
 
+    /* Функция форматирования заголовков Issue (твои кружки) */
+    function formatTitle(t) {
+        if (t.startsWith('+')) return '🟢 ' + t.slice(1).trim();
+        if (t.startsWith('-')) return '🔴 ' + t.slice(1).trim();
+        if (t.startsWith('*')) return '🔵 ' + t.slice(1).trim();
+        return '⚪ ' + t;
+    }
+
     async function getChangelog() {
         const box = document.getElementById('issues-container');
         try {
             const r = await fetch('https://api.github.com/repos/Uofi113/Lemonovos/issues?state=open');
             const data = await r.json();
-            box.innerHTML = data.map(i => `
+            box.innerHTML = data.map(i => {
+                const cleanBody = (i.body || '').replace(/\r/g, '').replace(/\n/g, '<br>'); // Убираем перенос строк
+                return `
                 <div style="border-left: 3px solid var(--accent); padding: 10px 15px; margin-bottom: 25px; background: rgba(100, 255, 218, 0.05);">
                     <div style="color: var(--accent); font-size: 0.8rem;">${new Date(i.created_at).toLocaleDateString()}</div>
-                    <div style="font-weight: bold; font-size: 1.1rem; margin: 5px 0;">${i.title}</div>
-                    <div style="font-size: 0.9rem; color: var(--text-dim);">${i.body || ''}</div>
-                </div>`).join('');
+                    <div style="font-weight: bold; font-size: 1.1rem; margin: 5px 0;">${formatTitle(i.title)}</div>
+                    <div style="font-size: 0.9rem; color: var(--text-dim); line-height: 1.4;">${cleanBody}</div>
+                </div>`;
+            }).join('');
         } catch(e) { box.innerHTML = 'Ошибка синхронизации.'; }
     }
     getChangelog();
