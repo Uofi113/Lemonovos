@@ -123,12 +123,14 @@
         
         .btn { display: block; text-align: center; padding: 12px; border: 2px solid var(--accent); color: var(--accent); text-decoration: none; border-radius: 6px; font-weight: bold; margin-top: 10px; }
         
+        /* ОБНОВЛЕННЫЕ СТИЛИ ЧЕЙНДЖЛОГА */
         .changelog-item { border-left: 3px solid var(--accent); padding: 10px 15px; margin-bottom: 25px; background: rgba(100, 255, 218, 0.05); }
         .changelog-date { color: var(--accent); font-size: 0.8rem; }
-        .changelog-title { font-weight: bold; font-size: 1.1rem; margin: 5px 0; }
+        .changelog-title { font-weight: bold; font-size: 1.1rem; margin: 5px 0; display: flex; align-items: center; }
         .changelog-body { font-size: 0.9rem; color: var(--text-dim); line-height: 1.4; }
+        .status-dot { margin-right: 10px; }
 
-        /* ТЕРМИНАЛ ИЗ ИСХОДНИКА (ПОД КОНТЕНТОМ) */
+        /* ТЕРМИНАЛ */
         .terminal-window { 
             background: #000; 
             color: #fff; 
@@ -243,7 +245,7 @@
 
     <section id="download">
         <h1>Скачать</h1>
-        <p>Статус: <b>0.8.2 Unstable</b></p>
+        <p>Статус: <b>0.58 Stable</b></p>
         <a class="btn" style="opacity: 0.5; pointer-events: none;">Скачать ISO (скоро)</a>
         <a href="https://t.me/lemonovos" class="btn" target="_blank">Telegram</a>
     </section>
@@ -270,14 +272,14 @@
 <script>
     const termDiv = document.getElementById('terminal');
 
-    // Навигация + Перемещение терминала
+    // Навигация
     function handleRoute() {
         const hash = window.location.hash || '#about';
         document.querySelectorAll('section').forEach(s => s.style.display = 'none');
         const target = document.querySelector(hash);
         if (target) {
             target.style.display = 'block';
-            target.appendChild(termDiv); // Закидываем терминал в конец активной секции
+            target.appendChild(termDiv); 
         }
     }
     window.addEventListener('hashchange', handleRoute);
@@ -319,18 +321,36 @@
         updateImages(theme);
     });
 
-    // GitHub Issues
+    // GitHub Issues С ЛОГИКОЙ ШАРИКОВ
     async function getChangelog() {
         const box = document.getElementById('issues-container');
         try {
             const r = await fetch('https://api.github.com/repos/Uofi113/Lemonovos/issues?state=open');
             const data = await r.json();
+            
             box.innerHTML = data.map(i => {
+                const rawTitle = i.title;
+                const firstChar = rawTitle.charAt(0);
+                let dot = '⚪️';
+                let cleanTitle = rawTitle;
+
+                const emojiMap = {
+                    '+': '🟢', // Исправления
+                    '-': '🔴', // Баги
+                    '!': '🟡', // Внимание
+                    '*': '🔵'  // Фичи
+                };
+
+                if (emojiMap[firstChar]) {
+                    dot = emojiMap[firstChar];
+                    cleanTitle = rawTitle.substring(1).trim();
+                }
+
                 const cleanBody = (i.body || '').replace(/\r/g, '').replace(/\n/g, '<br>');
                 return `
                 <div class="changelog-item">
                     <div class="changelog-date">${new Date(i.created_at).toLocaleDateString()}</div>
-                    <div class="changelog-title">${i.title}</div>
+                    <div class="changelog-title"><span class="status-dot">${dot}</span> ${cleanTitle}</div>
                     <div class="changelog-body">${cleanBody}</div>
                 </div>`;
             }).join('');
@@ -338,13 +358,13 @@
     }
     getChangelog();
 
-    // Терминальная анимация
+    // Терминал
     const termData = `[uofist@lemonovos ~]$ fastfetch
 
-X         X             OS: LemonovOS v0.8.2
+X         X             OS: LemonovOS v0.58
 XX        XXX           Kernel: Zen-kernel
  XX       X XX          Shell: zsh
-  XX      X  XX         WM: KDE Plasma
+  XX      X  XX         WM: KDE + GNOME
    XX     X   XX        ASCII: logo.txt
     XX    X     XX      Config: config.jsonc
      XXX  X      XX
@@ -352,7 +372,7 @@ XX        XXX           Kernel: Zen-kernel
         XXX
           X
 
-[OK] Bootloader config patched successfully.
+[OK] Fastfetch worked successfully
 `;
     
     let charIndex = 0;
