@@ -1,0 +1,19 @@
+groups:
+  - name: "Desktop Environments"
+    description: "Выберите графическую оболочку"
+    critical: true
+    subgroups:
+      - name: "KDE Plasma"
+        description: "Среда подвергающаяся глобальной настройке, подойдет для перехода с Windows"
+        packages:
+          - plasma-desktop
+          - dolphin
+          - konsole
+          - sddm
+          - plasma-wayland-session
+      - name: "GNOME"
+        description: "Современная и простая среда"
+        packages:
+          - gnome
+          - gnome-tweaks
+          - gdm
