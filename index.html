@@ -35,7 +35,6 @@
             transition: 0.3s ease;
             line-height: 1.5;
             overflow-x: hidden;
-            padding-bottom: 300px; /* Отступ под фиксированный терминал */
         }
 
         /* --- LIGHTBOX STYLES --- */
@@ -129,36 +128,28 @@
         .changelog-title { font-weight: bold; font-size: 1.1rem; margin: 5px 0; }
         .changelog-body { font-size: 0.9rem; color: var(--text-dim); line-height: 1.4; }
 
-        /* ТЕРМИНАЛ КАК ФИЧА (FIXED) */
+        /* ТЕРМИНАЛ ИЗ ИСХОДНИКА (ПОД КОНТЕНТОМ) */
         .terminal-window { 
-            position: fixed;
-            bottom: 15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 95%;
-            max-width: 900px;
-            background: rgba(0, 0, 0, 0.9); 
+            background: #000; 
             color: #fff; 
             font-family: 'Courier New', Courier, monospace; 
             padding: 15px; 
             border-radius: 10px; 
             border: 1px solid #333; 
-            box-shadow: 0 -5px 30px rgba(0,0,0,0.5); 
-            z-index: 1500;
-            min-height: 220px; 
-            max-height: 250px;
-            opacity: 1; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+            margin: 40px 0; 
+            min-height: 250px; 
             line-height: 1.2;
-            overflow-y: auto;
-            transition: 0.3s;
+            overflow-x: hidden;
+            width: 100%;
+            box-sizing: border-box;
         }
-        
-        .term-header { display: flex; gap: 6px; margin-bottom: 15px; position: sticky; top: 0; background: inherit; padding-bottom: 5px;}
+        .term-header { display: flex; gap: 6px; margin-bottom: 15px; }
         .dot { width: 12px; height: 12px; border-radius: 50%; }
         .red { background: #ff5f56; } .yellow { background: #ffbd2e; } .green { background: #27c93f; }
         
         .term-content { 
-            white-space: pre-wrap; 
+            white-space: pre; 
             display: block; 
             font-family: 'Courier New', Courier, monospace;
             font-size: clamp(9px, 2.2vw, 14px); 
@@ -180,7 +171,7 @@
                 font-size: 2.6vw; 
                 line-height: 1.1; 
             }
-            .terminal-window { padding: 10px; min-height: 180px; bottom: 5px;}
+            .terminal-window { padding: 10px; min-height: 200px; }
             nav a { font-size: 10px; }
             .workflow { flex-direction: column; }
             .wf-arrow { transform: rotate(90deg); margin: 5px 0; }
@@ -261,15 +252,15 @@
         <h1>Дневник разработки</h1>
         <div id="issues-container">Загрузка логов...</div>
     </section>
-</div>
 
-<div id="terminal" class="terminal-window">
-    <div class="term-header">
-        <div class="dot red"></div>
-        <div class="dot yellow"></div>
-        <div class="dot green"></div>
+    <div id="terminal" class="terminal-window">
+        <div class="term-header">
+            <div class="dot red"></div>
+            <div class="dot yellow"></div>
+            <div class="dot green"></div>
+        </div>
+        <div class="term-content" id="term-text"></div><span class="cursor"></span>
     </div>
-    <div class="term-content" id="term-text"></div><span class="cursor"></span>
 </div>
 
 <footer style="padding: 30px 15px; text-align: center; color: var(--text-dim); font-size: 0.75rem;">
@@ -277,7 +268,22 @@
 </footer>
 
 <script>
-    // LIGHTBOX LOGIC
+    const termDiv = document.getElementById('terminal');
+
+    // Навигация + Перемещение терминала
+    function handleRoute() {
+        const hash = window.location.hash || '#about';
+        document.querySelectorAll('section').forEach(s => s.style.display = 'none');
+        const target = document.querySelector(hash);
+        if (target) {
+            target.style.display = 'block';
+            target.appendChild(termDiv); // Закидываем терминал в конец активной секции
+        }
+    }
+    window.addEventListener('hashchange', handleRoute);
+    window.addEventListener('DOMContentLoaded', handleRoute);
+
+    // Lightbox
     function openLightbox(element) {
         const img = element.querySelector('img');
         const lb = document.getElementById('lightbox');
@@ -286,21 +292,9 @@
         lb.style.display = 'flex';
     }
 
-    // Навигация
-    function handleRoute() {
-        const hash = window.location.hash || '#about';
-        document.querySelectorAll('section').forEach(s => s.style.display = 'none');
-        const target = document.querySelector(hash);
-        if (target) target.style.display = 'block';
-        window.scrollTo(0,0);
-    }
-    window.addEventListener('hashchange', handleRoute);
-    window.addEventListener('DOMContentLoaded', handleRoute);
-
     // Тема
     const themeBtn = document.getElementById('theme-checkbox');
     const themeImages = document.querySelectorAll('.theme-img');
-
     function updateImages(theme) {
         themeImages.forEach(img => {
             const src = img.getAttribute(`data-${theme}`);
@@ -312,8 +306,6 @@
         document.documentElement.setAttribute('data-theme', 'light');
         themeBtn.checked = true;
         updateImages('light');
-    } else {
-        updateImages('dark');
     }
 
     themeBtn.addEventListener('change', () => {
@@ -327,14 +319,7 @@
         updateImages(theme);
     });
 
-    // GitHub Issues (Changelog)
-    function formatTitle(t) {
-        if (t.startsWith('+')) return '🟢 ' + t.slice(1).trim();
-        if (t.startsWith('-')) return '🔴 ' + t.slice(1).trim();
-        if (t.startsWith('*')) return '🔵 ' + t.slice(1).trim();
-        return '⚪ ' + t;
-    }
-
+    // GitHub Issues
     async function getChangelog() {
         const box = document.getElementById('issues-container');
         try {
@@ -345,7 +330,7 @@
                 return `
                 <div class="changelog-item">
                     <div class="changelog-date">${new Date(i.created_at).toLocaleDateString()}</div>
-                    <div class="changelog-title">${formatTitle(i.title)}</div>
+                    <div class="changelog-title">${i.title}</div>
                     <div class="changelog-body">${cleanBody}</div>
                 </div>`;
             }).join('');
@@ -353,42 +338,33 @@
     }
     getChangelog();
 
-    // Терминальная анимация (Теперь стартует сразу)
+    // Терминальная анимация
     const termData = `[uofist@lemonovos ~]$ fastfetch
 
-X          X                  OS: LemonovOS v0.8.2
-XX         XXX                Kernel: Zen-kernel
- XX        X XX               Shell: zsh
-  XX       X  XX              WM: KDE Plasma
-   XX      X   XX             ASCII: logo.txt
-    XX     X     XX           Config: config.jsonc
-     XXX   X      XX
-       XX  X        XX
-        XX X
-         XXX
-           X
+X         X             OS: LemonovOS v0.8.2
+XX        XXX           Kernel: Zen-kernel
+ XX       X XX          Shell: zsh
+  XX      X  XX         WM: KDE Plasma
+   XX     X   XX        ASCII: logo.txt
+    XX    X     XX      Config: config.jsonc
+     XXX  X      XX
+       XX X        XX
+        XXX
+          X
 
 [OK] Bootloader config patched successfully.
-[SYSTEM] Ready for deployment.
 `;
     
-    let i = 0;
+    let charIndex = 0;
     const termBox = document.getElementById('term-text');
-    const termDiv = document.getElementById('terminal');
-
     function typeTerm() {
-        if (i < termData.length) {
-            termBox.textContent += termData.charAt(i);
-            i++;
+        if (charIndex < termData.length) {
+            termBox.textContent += termData.charAt(charIndex);
+            charIndex++;
             setTimeout(typeTerm, 8);
-            termDiv.scrollTop = termDiv.scrollHeight; // Автоскролл терминала
         }
     }
-
-    // Запуск анимации при загрузке
-    window.addEventListener('load', () => {
-        setTimeout(typeTerm, 500);
-    });
+    setTimeout(typeTerm, 1000);
 </script>
 </body>
 </html>
