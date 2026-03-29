@@ -41,7 +41,7 @@
             min-height: 100vh;
         }
 
-        /* Улучшенный ползунок темы */
+        /* Ползунок темы с эмодзи на шарике */
         .theme-switch-wrapper {
             position: fixed;
             top: 20px;
@@ -82,7 +82,7 @@
         input:checked + .slider:before {
             transform: translateX(38px);
             content: "☀️";
-            background-color: #ffcc00; /* Цвет бананового солнца */
+            background-color: #ffcc00;
         }
 
         nav {
@@ -112,6 +112,7 @@
 
         h1 { color: var(--accent); font-size: 2.5rem; margin-top: 0; }
 
+        /* Стили галереи и адаптивной подложки */
         .gallery {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 20px; margin: 30px 0;
@@ -119,12 +120,22 @@
 
         .gallery-item {
             border-radius: 10px; overflow: hidden;
-            border: 1px solid var(--border); background: #000;
+            border: 1px solid var(--border); 
+            background: var(--bg); /* Подложка под цвет фона темы */
+            transition: 0.3s ease;
         }
 
-        .gallery-item img { width: 100%; height: 220px; object-fit: cover; opacity: 0.8; transition: 0.3s; }
+        .gallery-item img { width: 100%; height: 220px; object-fit: cover; opacity: 0.9; transition: 0.3s; }
         .gallery-item:hover img { opacity: 1; }
-        .label { padding: 12px; text-align: center; font-size: 0.85rem; color: var(--text-dim); }
+
+        .label { 
+            padding: 12px; 
+            text-align: center; 
+            font-size: 0.85rem; 
+            color: var(--text-dim);
+            background-color: var(--bg); /* Динамический цвет подложки текста */
+            transition: 0.3s ease;
+        }
 
         .btn {
             display: inline-block; padding: 15px 30px;
@@ -143,6 +154,8 @@
         .date { color: var(--accent); font-family: monospace; font-size: 0.9rem; margin-bottom: 5px; }
         .issue-title { font-weight: bold; font-size: 1.3rem; margin-bottom: 10px; }
         .issue-body { white-space: pre-wrap; color: var(--text-dim); }
+
+        footer { padding: 40px 20px 20px; text-align: center; margin-top: auto; }
     </style>
 </head>
 <body>
@@ -190,7 +203,7 @@
     </section>
 </div>
 
-<footer style="padding: 40px 20px 20px; text-align: center;">
+<footer>
     <div style="color: var(--text-dim); font-size: 0.8rem;">
         &copy; 2026 LemonovOS. Created by Uofi113
     </div>
@@ -207,32 +220,29 @@
     window.addEventListener('DOMContentLoaded', handleRoute);
 
     const themeBtn = document.getElementById('theme-checkbox');
-    const themeImages = document.querySelectorAll('.theme-img'); // Все динамические картинки
+    const themeImages = document.querySelectorAll('.theme-img');
 
-    // Функция обновления скриншотов
     function updateImages(theme) {
         themeImages.forEach(img => {
             img.src = img.getAttribute(`data-${theme}`);
         });
     }
     
-    // Проверка сохраненной темы при загрузке
     if (localStorage.getItem('theme') === 'light') {
         document.documentElement.setAttribute('data-theme', 'light');
         themeBtn.checked = true;
-        updateImages('light'); // Сразу ставим светлые скрины
+        updateImages('light');
     }
 
-    // Слушатель переключателя
     themeBtn.addEventListener('change', () => {
         if (themeBtn.checked) {
             document.documentElement.setAttribute('data-theme', 'light');
             localStorage.setItem('theme', 'light');
-            updateImages('light'); // Меняем скрины на светлые
+            updateImages('light');
         } else {
             document.documentElement.removeAttribute('data-theme');
             localStorage.setItem('theme', 'dark');
-            updateImages('dark'); // Меняем скрины на тёмные
+            updateImages('dark');
         }
     });
 
