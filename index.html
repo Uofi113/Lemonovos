@@ -117,9 +117,14 @@
         .term-header { display: flex; gap: 6px; margin-bottom: 15px; }
         .dot { width: 12px; height: 12px; border-radius: 50%; }
         .red { background: #ff5f56; } .yellow { background: #ffbd2e; } .green { background: #27c93f; }
-        .term-content { white-space: pre; display: block; }
-        .cursor { display: inline-block; width: 8px; height: 14px; background: var(--accent); animation: blink 1s infinite; vertical-align: middle;}
-        @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
+        
+        .term-content { 
+            white-space: pre; 
+            display: block; 
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.5vw; 
+            line-height: 1.2;
+        }
 
         @media (min-width: 600px) {
             h1 { font-size: 2.5rem; }
@@ -129,7 +134,16 @@
             section { padding: 40px; }
             .btn { display: inline-block; padding: 15px 30px; }
             .terminal-window { font-size: 0.85rem; }
+            .term-content { font-size: 0.85rem; }
         }
+
+        @media (max-width: 599px) {
+            .term-content { font-size: 1.6vw; line-height: 1.1; }
+            .terminal-window { padding: 10px; min-height: 200px; }
+        }
+
+        .cursor { display: inline-block; width: 8px; height: 14px; background: var(--accent); animation: blink 1s infinite; vertical-align: middle;}
+        @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
     </style>
 </head>
 <body>
@@ -218,7 +232,6 @@
     const themeBtn = document.getElementById('theme-checkbox');
     const themeImages = document.querySelectorAll('.theme-img');
 
-    // Функция смены картинок
     function updateImages(theme) {
         themeImages.forEach(img => {
             const src = img.getAttribute(`data-${theme}`);
@@ -242,7 +255,7 @@
             document.documentElement.removeAttribute('data-theme');
         }
         localStorage.setItem('theme', theme);
-        updateImages(theme); // Запуск смены картинок при переключении
+        updateImages(theme);
     });
 
     function formatTitle(t) {
@@ -272,15 +285,15 @@
 
     const termData = `[uofist@lemonovos ~]$ fastfetch
 
-X           X                OS: LemonovOS v0.8.2
-XX          XXX              Kernel: Zen-kernel
- XX         X XX             Shell: zsh
-  XX        X  XX            WM: KDE Plasma
-   XX       X   XX           ASCII: logo.txt
-    XX      X     XX         Config: config.jsonc
-     XXX    X      XX
-       XX   X       XX
-        XX  X
+X          X                OS: LemonovOS v0.8.2
+XX         XXX              Kernel: Zen-kernel
+ XX        X XX             Shell: zsh
+  XX       X  XX            WM: KDE Plasma
+   XX      X   XX           ASCII: logo.txt
+    XX     X     XX         Config: config.jsonc
+     XXX   X      XX
+       XX  X       XX
+        XXXX
          XXX
            X
           
