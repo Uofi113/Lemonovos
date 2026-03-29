@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -6,7 +7,7 @@
     <title>LemonovOS | Official</title>
     <style>
         :root {
-            /* Темная тема */
+            /* Темная тема (основная) */
             --bg: #0a192f;
             --card: rgba(17, 34, 64, 0.8);
             --accent: #64ffda;
@@ -35,9 +36,12 @@
             margin: 0;
             transition: 0.3s ease;
             line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
-        /* Ползунок темы */
+        /* Улучшенный ползунок темы */
         .theme-switch-wrapper {
             position: fixed;
             top: 20px;
@@ -47,9 +51,9 @@
 
         .theme-switch {
             display: inline-block;
-            height: 34px;
+            height: 38px;
             position: relative;
-            width: 70px;
+            width: 76px;
         }
 
         .theme-switch input { display: none; }
@@ -59,20 +63,29 @@
             bottom: 0; cursor: pointer; left: 0;
             position: absolute; right: 0; top: 0;
             transition: .4s; border-radius: 34px;
-            display: flex; align-items: center;
-            justify-content: space-between; padding: 0 8px;
             border: 1px solid var(--border);
+            overflow: hidden;
         }
 
+        /* Сам шарик ползунка */
         .slider:before {
             background-color: var(--accent);
-            bottom: 4px; content: ""; height: 26px;
-            left: 4px; position: absolute; transition: .4s;
-            width: 26px; border-radius: 50%; z-index: 2;
+            bottom: 4px; content: "🌙"; /* Эмодзи по умолчанию (темная тема) */
+            height: 30px; left: 4px;
+            position: absolute; transition: .4s;
+            width: 30px; border-radius: 50%;
+            z-index: 2;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
 
-        input:checked + .slider:before { transform: translateX(36px); }
-        .slider .icon { font-size: 16px; z-index: 1; user-select: none; }
+        /* Анимация движения шарика */
+        input:checked + .slider:before {
+            transform: translateX(38px);
+            content: "☀️"; /* Эмодзи для светлой темы */
+            background-color: #ffdb58; /* Цвет солнышка для шарика */
+        }
 
         nav {
             display: flex; justify-content: center; gap: 30px;
@@ -88,7 +101,7 @@
             text-transform: uppercase; letter-spacing: 2px;
         }
 
-        .container { max-width: 900px; margin: 120px auto 60px; padding: 0 20px; }
+        .container { max-width: 900px; margin: 120px auto 20px; padding: 0 20px; flex: 1; }
 
         section {
             display: none; background: var(--card);
@@ -124,7 +137,6 @@
 
         .btn.disabled { border-color: var(--text-dim); color: var(--text-dim); opacity: 0.4; pointer-events: none; }
 
-        /* Фикс дневника */
         .changelog-item {
             border-left: 3px solid var(--accent);
             padding: 10px 20px; margin-bottom: 40px;
@@ -140,11 +152,7 @@
 <div class="theme-switch-wrapper">
     <label class="theme-switch">
         <input type="checkbox" id="theme-checkbox">
-        <div class="slider">
-            <span class="icon">🌙</span>
-            <span class="icon">☀️</span>
-        </div>
-    </label>
+        <div class="slider"></div> </label>
 </div>
 
 <nav>
@@ -183,6 +191,12 @@
     </section>
 </div>
 
+<footer style="padding: 40px 20px 20px; text-align: center;">
+    <div style="color: var(--text-dim); font-size: 0.8rem;">
+        &copy; 2026 LemonovOS. Created by Uofi113
+    </div>
+</footer>
+
 <script>
     function handleRoute() {
         const hash = window.location.hash || '#about';
@@ -193,12 +207,14 @@
     window.addEventListener('hashchange', handleRoute);
     window.addEventListener('DOMContentLoaded', handleRoute);
 
-    // Тема
     const themeBtn = document.getElementById('theme-checkbox');
+    
+    // Проверка сохраненной темы при загрузке
     if (localStorage.getItem('theme') === 'light') {
         document.documentElement.setAttribute('data-theme', 'light');
         themeBtn.checked = true;
     }
+
     themeBtn.addEventListener('change', () => {
         if (themeBtn.checked) {
             document.documentElement.setAttribute('data-theme', 'light');
