@@ -11,11 +11,9 @@ groups:
           - konsole
           - sddm
           - plasma-wayland-session
-          - lemonovos-config  
       - name: "GNOME"
         description: "Современная и простая среда"
         packages:
           - gnome
           - gnome-tweaks
           - gdm
-          - lemonovos-config 
