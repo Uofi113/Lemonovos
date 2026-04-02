@@ -19,3 +19,8 @@ style:
    sidebarText:          "#FFFFFF"
    sidebarTextSelect:    "#292F34"
    sidebarTextSelectBackground: "#3daee9"
+
+slideshow:
+    - "logo.png"
+
+slideshowAPI: 1
