@@ -1,0 +1,21 @@
+---
+componentName: lemonovos
+
+welcomeStyleCalamares: true
+
+strings:
+    productName:         LemonovOS
+    shortProductName:    Lemonov
+    productUrl:          https://t.me/lemonovos
+    supportUrl:          https://t.me/lemonovos
+
+images:
+    productLogo:         "logo.png"
+    productIcon:         "logo.png"
+    productWelcome:      "logo.png"
+
+style:
+   sidebarBackground:    "#292F34"
+   sidebarText:          "#FFFFFF"
+   sidebarTextSelect:    "#292F34"
+   sidebarTextSelectBackground: "#3daee9"
