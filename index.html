@@ -125,7 +125,8 @@
         
         /* ОБНОВЛЕННЫЕ СТИЛИ ЧЕЙНДЖЛОГА */
         .changelog-item { border-left: 3px solid var(--accent); padding: 10px 15px; margin-bottom: 25px; background: rgba(100, 255, 218, 0.05); }
-        .changelog-date { color: var(--accent); font-size: 0.8rem; }
+        .changelog-date { color: var(--accent); font-size: 0.8rem; display: flex; gap: 10px; align-items: center; }
+        .devlog-num { font-weight: bold; color: var(--accent); opacity: 0.8; }
         .changelog-title { font-weight: bold; font-size: 1.1rem; margin: 5px 0; display: flex; align-items: center; }
         .changelog-body { font-size: 0.9rem; color: var(--text-dim); line-height: 1.4; }
         .status-dot { margin-right: 10px; }
@@ -322,14 +323,15 @@
         updateImages(theme);
     });
 
-    // GitHub Issues С ЛОГИКОЙ ШАРИКОВ
+    // GitHub Issues С ЛОГИКОЙ ШАРИКОВ И НУМЕРАЦИЕЙ
     async function getChangelog() {
         const box = document.getElementById('issues-container');
         try {
             const r = await fetch('https://api.github.com/repos/Uofi113/Lemonovos/issues?state=open');
             const data = await r.json();
             
-            box.innerHTML = data.map(i => {
+            box.innerHTML = data.map((i, index) => {
+                const issueNumber = data.length - index;
                 const rawTitle = i.title;
                 const firstChar = rawTitle.charAt(0);
                 let dot = '⚪️';
@@ -350,7 +352,10 @@
                 const cleanBody = (i.body || '').replace(/\r/g, '').replace(/\n/g, '<br>');
                 return `
                 <div class="changelog-item">
-                    <div class="changelog-date">${new Date(i.created_at).toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
+                    <div class="changelog-date">
+                        <span class="devlog-num">#${issueNumber}</span>
+                        ${new Date(i.created_at).toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                    </div>
                     <div class="changelog-title"><span class="status-dot">${dot}</span> ${cleanTitle}</div>
                     <div class="changelog-body">${cleanBody}</div>
                 </div>`;
