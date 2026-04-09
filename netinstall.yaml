@@ -1,19 +1,15 @@
 groups:
-  - name: "Desktop Environments"
-    description: "Выберите графическую оболочку"
+  - name: "Дополнительные пакеты"
+    description: "."
     critical: true
     subgroups:
-      - name: "KDE Plasma"
-        description: "Среда подвергающаяся глобальной настройке, подойдет для перехода с Windows"
+      - name: "Браузеры"
+        description: "."
         packages:
-          - plasma-desktop
-          - dolphin
-          - konsole
-          - sddm
-          - plasma-wayland-session
-      - name: "GNOME"
-        description: "Современная и простая среда"
+          - chromium
+          - firefox
+      - name: "Мессенджеры"
+        description: "."
         packages:
-          - gnome
-          - gnome-tweaks
-          - gdm
+          - telegram-desktop
+          - discord
