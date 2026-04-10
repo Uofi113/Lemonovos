@@ -13,3 +13,10 @@ groups:
         packages:
           - telegram-desktop
           - discord
+      - name: "Медиа"
+        descrtiption: "."
+        packages:
+          - vlc
+          - gst-plugins-bad
+          - libdvdcss
+          - pipewirte-codec-aptx
