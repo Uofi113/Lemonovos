@@ -1,7 +1,7 @@
 groups:
   - name: "Дополнительные пакеты"
     description: "."
-    critical: true
+    critical: false
     subgroups:
       - name: "Браузеры"
         description: "."
@@ -20,6 +20,10 @@ groups:
           - gst-plugins-bad
           - libdvdcss
           - pipewire-codec-aptx
+      - name: "Хедерсы"
+        description: "."
+        packages:
+          - linux-zen-headers
       - name: "Софт для спасения данных"
         description: "Софт что-бы можно было восстановить диск если что-то сломается"
         packages:
