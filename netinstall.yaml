@@ -61,7 +61,7 @@ groups:
           - bolt
           - vim
           - fatresize
-     - name: "Либы 32 бит"
+      - name: "Либы 32 бит"
         description: "."
         packages:
           - lib32-giflib
