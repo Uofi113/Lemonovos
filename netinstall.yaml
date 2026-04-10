@@ -19,4 +19,4 @@ groups:
           - vlc
           - gst-plugins-bad
           - libdvdcss
-          - pipewirte-codec-aptx
+          - pipewire-codec-aptx
