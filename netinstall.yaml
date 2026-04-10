@@ -14,9 +14,45 @@ groups:
           - telegram-desktop
           - discord
       - name: "Медиа"
-        descrtiption: "."
+        description: "."
         packages:
           - vlc
           - gst-plugins-bad
           - libdvdcss
           - pipewire-codec-aptx
+      - name: "Софт для спасения данных"
+        descripton: "Софт что-бы можно было восстановить диск если что-то сломается"
+        packages:
+          - clonezilla
+          - testdisk
+          - ddrescue
+          - fsarchiver
+          - partclone
+          - partimage
+      - name: "Штуки для сети"
+        description: "Опциональный софт для сети"
+        packages:
+          - nmap
+          - tcpdump
+          - irssi
+          - lftp
+          - lynx
+          - openconnect
+          - vpnc
+          - pptpclient
+          - x12tpd
+          - wvdial
+          - bind
+          - dnsmasq
+      - name "Мусор имхо"
+        description: "."
+        packages:
+          - bcachefs-tools
+          - jfsutils
+          - nilfs-utils
+          - exfatprogs
+          - dmraid
+          - darkhttpd
+          - cloud-init
+          - bolt
+          - fatresize
