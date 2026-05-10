@@ -1,70 +1,108 @@
 groups:
-  - name: "Дополнительные пакеты"
-    description: "."
+  - name: "Гейминг и Развлечения"
+    description: "Все, чтобы превратить LemonovOS в игровую станцию."
+    critical: false
+    subgroups:
+      - name: "Lemonov Gaming"
+        description: "Полный набор: Steam, Wine, Proton, MangoHud и оптимизации."
+        packages:
+          - lemonovos-gaming
+      - name: "Эмуляторы и лаунчеры"
+        description: "Дополнительные инструменты для игроков."
+        packages:
+          - lutris
+          - heroic-games-launcher-bin
+          - bottles
+
+  - name: "Интернет и Общение"
+    description: "Браузеры и мессенджеры."
     critical: false
     subgroups:
       - name: "Браузеры"
-        description: "."
+        description: "Выбери свой доступ в сеть."
         packages:
-          - chromium
           - firefox
+          - chromium
       - name: "Мессенджеры"
-        description: "."
+        description: "Связь с миром."
         packages:
           - telegram-desktop
           - discord
-      - name: "Медиа"
-        description: "."
+          - vesktop # Тот же дискорд, но с работающим показом экрана в Wayland
+
+  - name: "Работа с Медиа"
+    description: "Воспроизведение и создание контента."
+    critical: false
+    subgroups:
+      - name: "Плееры и Кодеки"
+        description: "Чтобы открывалось любое видео."
         packages:
           - vlc
+          - mpv # Легкая альтернатива VLC
           - gst-plugins-bad
           - libdvdcss
-          - pipewire-codec-aptx
-      - name: "Хедерсы"
-        description: "."
+          - pipewire-codec-aptx # Для качественного звука в Bluetooth ушах
+      - name: "Графика и Офис"
+        description: "Базовый набор для работы."
+        packages:
+          - libreoffice-fresh
+          - gimp
+          - obsidian # Для заметок
+
+  - name: "Системные компоненты"
+    description: "Важные дополнения для железа и ядра."
+    critical: false
+    subgroups:
+      - name: "Ядро и Разработка"
+        description: "Необходимо для сборки драйверов и софта."
         packages:
           - linux-zen-headers
-      - name: "Софт для спасения данных"
-        description: "Софт что-бы можно было восстановить диск если что-то сломается"
-        packages:
-          - clonezilla
-          - testdisk
-          - ddrescue
-          - fsarchiver
-          - partclone
-          - partimage
-      - name: "Штуки для сети"
-        description: "Опциональный софт для сети"
-        packages:
-          - nmap
-          - tcpdump
-          - irssi
-          - lftp
-          - lynx
-          - openconnect
-          - vpnc
-          - pptpclient
-          - xl2tpd
-          - wvdial
-          - bind
-          - dnsmasq
-      - name: "Мусор имхо"
-        description: "."
-        packages:
-          - bcachefs-tools
-          - jfsutils
-          - nilfs-utils
-          - exfatprogs
-          - dmraid
-          - darkhttpd
-          - cloud-init
-          - bolt
-          - vim
-          - fatresize
-      - name: "Либы 32 бит"
-        description: "."
+          - base-devel
+          - git
+      - name: "Низкоуровневые либы (32-бит)"
+        description: "Нужны для старых игр и Wine."
         packages:
           - lib32-giflib
           - lib32-gnutls
           - lib32-vulkan-icd-loader
           - lib32-mesa
+      - name: "Поддержка железа и ФС"
+        description: "То, что ты считал мусором, но иногда оно спасает (например, флешки)."
+        packages:
+          - exfatprogs # Чтобы работали флешки > 32ГБ
+          - bolt # Для работы Thunderbolt/Type-C док-станций
+          - ntfs-3g
+          - bat # Улучшенный 'cat' с подсветкой (в стиле LemonovOS)
+
+  - name: "Продвинутая Сеть и Спасение"
+    description: "Инструменты для тех, кто знает, что делает."
+    critical: false
+    subgroups:
+      - name: "Анализ и VPN"
+        description: "Сетевые утилиты."
+        packages:
+          - nmap
+          - tcpdump
+          - openconnect
+          - wireguard-tools
+      - name: "Восстановление"
+        description: "Если диск решил 'уйти'."
+        packages:
+          - testdisk
+          - ddrescue
+          - clonezilla
+
+  - name: "Консольный уголок (на любителя)"
+    description: "Тот самый 'мусор' и терминальные штуки."
+    critical: false
+    subgroups:
+      - name: "Текстовые редакторы"
+        description: "Для правки конфигов руками."
+        packages:
+          - vim
+          - micro # Намного удобнее вима для новичков
+      - name: "Терминальное ретро"
+        description: "Lynx, IRC и прочее."
+        packages:
+          - lynx
+          - irssi
