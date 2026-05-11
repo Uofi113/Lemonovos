@@ -85,7 +85,7 @@
             display: flex; flex-direction: column; padding: 30px 20px; position: relative;
         }
 
-        .logo-area { display: flex; align-items: center; gap: 15px; margin-bottom: 40px; padding: 0 10px; }
+        .logo-area { display: flex; align-items: center; gap: 15px; margin-bottom: 40px; padding: 0 10px; cursor: pointer; user-select: none; }
         .logo-icon {
             width: 38px; height: 38px; background: linear-gradient(135deg, var(--accent), #89b4fa);
             border-radius: 10px; display: flex; align-items: center; justify-content: center;
@@ -235,8 +235,9 @@
         .tl-badge { background: var(--accent-glow); color: var(--accent); padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: bold; }
         .tl-body { color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; }
 
-        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(8px); opacity: 0; transition: opacity 0.3s; }
-        .modal-overlay.active { display: flex; opacity: 1; }
+        /* ИСПРАВЛЕННАЯ АНИМАЦИЯ МОДАЛОК */
+        .modal-overlay { visibility: hidden; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 2000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); opacity: 0; transition: opacity 0.3s ease, visibility 0.3s; }
+        .modal-overlay.active { visibility: visible; opacity: 1; }
         
         .lightbox-img { max-width: 90vw; max-height: 90vh; border-radius: 12px; box-shadow: 0 0 50px rgba(0,0,0,0.8); transform: scale(0.95); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
         .modal-overlay.active .lightbox-img { transform: scale(1); }
@@ -353,9 +354,11 @@
             </div>
             <div class="archive-content" style="gap: 20px; padding: 30px 20px;">
                 <a href="https://boosty.to/lemonovos" target="_blank" class="donate-option boosty">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 10px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
                     Boosty
                 </a>
                 <a href="https://www.donationalerts.com/r/lemonovos" target="_blank" class="donate-option da">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 10px;"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
                     DonationAlerts
                 </a>
             </div>
@@ -638,7 +641,7 @@
                         </div>
                     </div>
                 </div>
-             <section>
+             </section> 
 
             <section id="faq">
                 <div class="header-block">
@@ -700,6 +703,19 @@
                     window.location.hash = item.getAttribute('data-target');
                 }
             });
+        });
+
+        // СКРИПТ ДЛЯ ПАСХАЛКИ (10 кликов по лого)
+        let logoClicks = 0;
+        const logoArea = document.querySelector('.logo-area');
+        logoArea.addEventListener('click', () => {
+            logoClicks++;
+            if(logoClicks === 10) {
+                window.location.hash = 'petrusya';
+                let audio = new Audio('meow.mp3');
+                audio.play().catch(e => console.log('Аудио meow.mp3 не найдено или заблокировано браузером'));
+                logoClicks = 0;
+            }
         });
 
         const themeBtn = document.getElementById('theme-checkbox');
