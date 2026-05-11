@@ -262,6 +262,25 @@
         .donate-option.da { background: linear-gradient(135deg, #FF7F00, #E67300); }
         .donate-option.da:hover { box-shadow: 0 5px 15px rgba(255, 127, 0, 0.4); transform: translateY(-2px); }
 
+        .hw-checker { display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
+        .hw-input { flex-grow: 1; background: var(--bg-crust); border: 1px solid var(--border); color: var(--text-main); padding: 15px 20px; border-radius: 12px; font-size: 1rem; outline: none; transition: var(--transition); }
+        .hw-input:focus { border-color: var(--accent); }
+        .hw-btn { padding: 15px 30px; flex-shrink: 0; }
+        .hw-result { background: var(--bg-mantle); border: 1px solid var(--border); padding: 20px; border-radius: 12px; display: none; animation: slideUp 0.3s forwards; }
+        .hw-result.active { display: block; }
+        .hw-result-title { font-weight: bold; font-size: 1.2rem; margin-bottom: 10px; color: var(--accent); }
+
+        .xray-wrapper { position: relative; width: 100%; margin: 40px auto 0; border-radius: 20px; overflow: hidden; border: 1px solid var(--border); background: var(--bg-crust); }
+        .xray-img { width: 100%; display: block; opacity: 0.3; filter: grayscale(100%) contrast(120%); transition: var(--transition); }
+        .xray-wrapper:hover .xray-img { opacity: 0.1; }
+        
+        @keyframes pulse-dot { 0% { box-shadow: 0 0 0 0 var(--accent-glow); } 70% { box-shadow: 0 0 0 15px rgba(203,166,247,0); } 100% { box-shadow: 0 0 0 0 rgba(203,166,247,0); } }
+        .hotspot { position: absolute; width: 20px; height: 20px; background: var(--accent); border-radius: 50%; cursor: pointer; transform: translate(-50%, -50%); z-index: 2; animation: pulse-dot 2s infinite; }
+        .hotspot-info { position: absolute; bottom: 150%; left: 50%; transform: translateX(-50%) translateY(10px); background: var(--card-bg); backdrop-filter: blur(10px); border: 1px solid var(--border); padding: 15px; border-radius: 12px; width: 250px; opacity: 0; visibility: hidden; transition: var(--transition); pointer-events: none; text-align: center; }
+        .hotspot:hover .hotspot-info { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+        .hotspot-info h4 { color: var(--text-main); margin-bottom: 5px; }
+        .hotspot-info p { color: var(--text-muted); font-size: 0.85rem; line-height: 1.4; }
+
         #petrusya { display: none; }
         #petrusya.active { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; animation: slideUp 0.4s ease forwards; width: 100%; }
         .petrusya-img { max-width: 80%; max-height: 50vh; border-radius: 50%; box-shadow: 0 20px 80px rgba(203, 166, 247, 0.3); border: 4px solid var(--accent); transition: transform 0.3s; margin-top: 20px; object-fit: cover;}
@@ -372,6 +391,10 @@
                 <a href="#changelog" class="nav-item" data-target="changelog">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
                     Дневник
+                </a>
+                <a href="#hardware" class="nav-item" data-target="hardware">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                    Потянет ли?
                 </a>
                 <a href="#faq" class="nav-item" data-target="faq" style="margin-top: auto;">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
@@ -567,6 +590,56 @@
                 </div>
             </section>
 
+            <section id="hardware">
+                <div class="header-block">
+                    <h1>Моё <span class="gradient-text">Железо</span></h1>
+                    <p class="subtitle">Проверьте совместимость вашей системы с LemonovOS и изучите архитектуру под капотом.</p>
+                </div>
+
+                <div class="bento-card bento-wide" style="margin-bottom: 50px;">
+                    <div class="bento-title">Калькулятор совместимости</div>
+                    <div class="bento-desc" style="margin-bottom: 20px;">Введите модель вашей видеокарты или процессора (например, RTX 4060 или Ryzen 5).</div>
+                    <div class="hw-checker">
+                        <input type="text" id="hw-input" class="hw-input" placeholder="Например: NVIDIA GTX 1650" onkeydown="if(event.key === 'Enter') checkHardware()">
+                        <button class="btn btn-primary hw-btn" onclick="checkHardware()">Проверить</button>
+                    </div>
+                    <div id="hw-result" class="hw-result">
+                        <div class="hw-result-title" id="hw-result-title"></div>
+                        <div id="hw-result-desc" style="color: var(--text-muted); line-height: 1.5;"></div>
+                    </div>
+                </div>
+
+                <div class="header-block">
+                    <h1>Рентген <span class="gradient-text">ПК</span></h1>
+                    <p class="subtitle">Наведите курсор на пульсирующие узлы, чтобы узнать, как ОС оптимизирует железо.</p>
+                </div>
+
+                <div class="xray-wrapper">
+                    <img src="img/desktop-dark.jpg" class="xray-img" alt="X-Ray Computer Diagram" onerror="this.src='https://via.placeholder.com/800x450/11111b/313244?text=X-Ray+Diagram'">
+                    
+                    <div class="hotspot" style="top: 35%; left: 35%;">
+                        <div class="hotspot-info">
+                            <h4>Ядро Zen (CPU)</h4>
+                            <p>Оптимизированный планировщик задач процессора. Снижает задержки до минимума для плавной работы и игр даже при 100% нагрузке.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="hotspot" style="top: 50%; left: 55%;">
+                        <div class="hotspot-info">
+                            <h4>ZRAM (ОЗУ)</h4>
+                            <p>Интеллектуальное сжатие в оперативной памяти. Ваши 8ГБ будут работать как 12ГБ без использования медленного файла подкачки на диске.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="hotspot" style="top: 70%; left: 45%;">
+                        <div class="hotspot-info">
+                            <h4>BTRFS Снапшоты (SSD)</h4>
+                            <p>Файловая система мгновенно создает снимок перед каждым обновлением. Полная защита от критических сбоев и сломанных драйверов.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <section id="faq">
                 <div class="header-block">
                     <h1>Частые <span class="gradient-text">Вопросы</span></h1>
@@ -674,6 +747,31 @@
         function closeModal(e, id) {
             if (e.target.id === id || e.target.classList.contains('close-btn')) {
                 document.getElementById(id).classList.remove('active');
+            }
+        }
+
+        function checkHardware() {
+            const val = document.getElementById('hw-input').value.toLowerCase();
+            const resBox = document.getElementById('hw-result');
+            const resTitle = document.getElementById('hw-result-title');
+            const resDesc = document.getElementById('hw-result-desc');
+            
+            if(!val) return;
+            
+            resBox.classList.add('active');
+            
+            if(val.match(/nvidia|rtx|gtx|quadro/)) {
+                resTitle.textContent = "Статус: Идеально (NVIDIA)";
+                resDesc.textContent = "Juicer автоматически установит проприетарные драйверы nvidia-dkms и nvidia-utils. Поддержка Wayland и модулей DRM включена по умолчанию.";
+            } else if(val.match(/amd|radeon|rx|ryzen/)) {
+                resTitle.textContent = "Статус: Нативно (AMD)";
+                resDesc.textContent = "Juicer установит открытые драйверы xf86-video-amdgpu и mesa. У вас будет лучшая нативная поддержка Wayland прямо из коробки.";
+            } else if(val.match(/intel|arc|hd graphics|uhd|core/)) {
+                resTitle.textContent = "Статус: Отлично (Intel)";
+                resDesc.textContent = "Juicer установит драйверы xf86-video-intel и необходимые пакеты mesa. Аппаратное ускорение видео будет работать сразу.";
+            } else {
+                resTitle.textContent = "Статус: Нормально";
+                resDesc.textContent = "Скорее всего, ваше оборудование поддерживается встроенными драйверами ядра Linux. Система загрузится на базовых драйверах.";
             }
         }
 
