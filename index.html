@@ -536,14 +536,13 @@
                 document.getElementById(id).classList.remove('active');
             }
         }
-
-        // --- 4. КОНСОЛЬ (Простая и стильная) ---
+// --- 4. КОНСОЛЬ (Актуальная версия v0.8.4) ---
         const termCmds = [
             { t: "<span class='term-user'>uofist</span>@<span class='term-host'>lemonovos</span> <span class='term-path'>~</span> $ ", d: "fastfetch\n" },
-            { t: "", d: "X         X             OS: LemonovOS v0.84\nXX        XXX           Kernel: 6.8.9-zen1\n XX       X XX          Uptime: 2 mins\n  XX      X  XX         Packages: 847 (pacman)\n   XX     X   XX        Shell: zsh 5.9\n    XX    X     XX      WM: Hyprland / KDE\n     XXX  X      XX     Theme: Catppuccin-Mocha\n       XX X        XX   Memory: 840MiB / 8192MiB\n        XXX\n          X\n\n" },
+            { t: "", d: "X         X             OS: LemonovOS v0.8.4\nXX        XXX           Kernel: Zen-kernel\n XX       X XX          Shell: zsh\n  XX      X  XX         WM: KDE + GNOME\n   XX     X   XX        Terminal: Bash\n   XX     X   XX        ASCII: logo.txt\n    XX    X     XX      Config: config.jsonc\n     XXX  X      XX\n       XX X        XX\n\n" },
             { t: "<span class='term-user'>uofist</span>@<span class='term-host'>lemonovos</span> <span class='term-path'>~</span> $ ", d: "echo 'Система готова к работе.'\n<span style='color: var(--success);'>Система готова к работе.</span>\n" }
         ];
-
+        
         let cIdx = 0; let charIdx = 0;
         const termBox = document.getElementById('term-text');
         
