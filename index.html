@@ -235,7 +235,6 @@
         .tl-badge { background: var(--accent-glow); color: var(--accent); padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: bold; }
         .tl-body { color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; }
 
-        /* ИСПРАВЛЕННАЯ АНИМАЦИЯ МОДАЛОК */
         .modal-overlay { visibility: hidden; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 2000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); opacity: 0; transition: opacity 0.3s ease, visibility 0.3s; }
         .modal-overlay.active { visibility: visible; opacity: 1; }
         
@@ -288,17 +287,34 @@
         .petrusya-img:hover { transform: scale(1.05); box-shadow: 0 20px 100px rgba(203, 166, 247, 0.5); }
 
         @media (max-width: 900px) {
+            body { align-items: flex-start; }
+            .app-window { flex-direction: column; width: 100vw; height: 100dvh; border-radius: 0; border: none; }
+            .sidebar { width: 100%; padding: 15px 20px; border-right: none; border-bottom: 1px solid var(--border); flex-direction: row; align-items: center; justify-content: space-between; z-index: 100; flex-shrink: 0; }
+            .logo-area { margin-bottom: 0; padding: 0; }
+            .sidebar-footer { display: flex; padding-top: 0; border-top: none; flex-direction: row; align-items: center; margin-top: 0; width: auto; gap: 15px;}
+            .sidebar-footer .donate-btn { display: none; } 
+            .theme-switch-wrapper span { display: none; } 
+            .nav-links { position: fixed; bottom: 0; left: 0; right: 0; flex-direction: row; width: 100%; background: var(--sidebar-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); border-top: 1px solid var(--border); padding: 10px 10px calc(10px + env(safe-area-inset-bottom)); gap: 5px; overflow-x: auto; z-index: 100; justify-content: space-between; margin-top: 0; }
+            .nav-links::-webkit-scrollbar { display: none; } 
+            .nav-item { flex-direction: column; gap: 5px; padding: 8px 4px; font-size: 0.65rem; justify-content: center; text-align: center; border-radius: 10px; flex: 1 1 auto; min-width: 60px; border: none; }
+            .nav-item.active { background: transparent; color: var(--accent); }
+            .nav-item.active::before { display: none; } 
+            .nav-item svg { width: 20px; height: 20px; margin: 0 auto; }
+            .main-content { padding: 20px 20px 100px 20px; } 
+            h1 { font-size: 2rem; }
             .bento-grid { grid-template-columns: 1fr; }
             .bento-large, .bento-wide { grid-column: span 1; }
             .dl-grid { grid-template-columns: 1fr; }
             .social-grid { grid-template-columns: 1fr; }
-            .app-window { flex-direction: column; width: 100vw; height: 100vh; border-radius: 0; border: none; }
-            .sidebar { width: 100%; padding: 15px 20px; border-right: none; border-bottom: 1px solid var(--border); flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: space-between; }
-            .logo-area { margin-bottom: 0; }
-            .nav-links { flex-direction: row; width: 100%; overflow-x: auto; margin-top: 15px; gap: 10px; padding-bottom: 5px; }
-            .sidebar-footer { display: none; }
-            .main-content { padding: 20px; }
             .gallery-wrap { grid-template-columns: 1fr; }
+            .archive-box { width: 95%; max-height: 85vh; }
+            .hw-checker { flex-direction: column; }
+            .hw-btn { width: 100%; }
+            .timeline { padding-left: 20px; }
+            .tl-dot { left: -26px; }
+            .tl-header { flex-direction: column; gap: 8px; }
+            .tl-date { align-items: flex-start; }
+            .hotspot-info { width: 200px; }
         }
     </style>
 </head>
@@ -705,7 +721,7 @@
             });
         });
 
-        // СКРИПТ ДЛЯ ПАСХАЛКИ (10 кликов по лого)
+        // СКРИПТ ДЛЯ ПАСХАЛКИ 1 (10 кликов по лого)
         let logoClicks = 0;
         const logoArea = document.querySelector('.logo-area');
         logoArea.addEventListener('click', () => {
@@ -839,6 +855,19 @@
             } catch(e) { box.innerHTML = '<div class="tl-item"><div class="tl-dot" style="border-color: var(--danger)"></div><div class="tl-content" style="color: var(--danger)">Ошибка API.</div></div>'; }
         }
         getChangelog();
+
+        // СЕКРЕТНАЯ ПАСХАЛКА 2 (SUDO)
+        let keysPressed = '';
+        window.addEventListener('keydown', (e) => {
+            keysPressed += e.key.toLowerCase();
+            if (keysPressed.length > 4) {
+                keysPressed = keysPressed.substring(keysPressed.length - 4);
+            }
+            if (keysPressed === 'sudo') {
+                alert('uofist is not in the sudoers file. This incident will be reported.');
+                keysPressed = '';
+            }
+        });
     </script>
 </body>
 </html>
