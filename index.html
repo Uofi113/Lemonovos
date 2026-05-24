@@ -766,8 +766,8 @@
             const img = document.getElementById('main-de-img');
             
             if(de === 'kde') img.src = 'img/desktop-dark.jpg';
-            else if(de === 'gnome') img.src = 'img/gnome-preview.jpg';
-            else if(de === 'hyprland') img.src = 'img/hyprland-preview.jpg';
+            else if(de === 'gnome') img.src = 'img/gnome-preview.png';
+            else if(de === 'xfce4') img.src = 'img/xfce-preview.png';
             
             img.onerror = () => img.src = `https://via.placeholder.com/800x450/1e1e2e/cba6f7?text=${de.toUpperCase()}+Preview`;
         }
