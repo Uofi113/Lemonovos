@@ -800,7 +800,6 @@
             }
         }
 
-        // ИЗМЕНЕНО: Огромная база данных железа для калькулятора совместимости
         function checkHardware() {
             const val = document.getElementById('hw-input').value.trim().toLowerCase();
             const resBox = document.getElementById('hw-result');
@@ -808,42 +807,56 @@
             const resDesc = document.getElementById('hw-result-desc');
             
             if(!val) return;
+            
             resBox.classList.add('active');
 
+            const jokeRegex = /залуп|хуй|пизд|член|говно|кака|жоп|мама|маму|брат|сестр|картошк/i;
+            if (jokeRegex.test(val)) {
+                resTitle.textContent = "Статус: Критическая ошибка 💀";
+                resTitle.style.color = "var(--danger)";
+                resDesc.textContent = "Система проанализировала твой запрос и пришла к выводу, что на ЭТОМ операционку не запустить. Введи нормальное название процессора или видеокарты (например, RTX 4060 или Ryzen 5).";
+                return;
+            }
+
+            resTitle.style.color = "var(--accent)"; 
+
             const hardwareDatabase = [
-                // ПРОЦЕССОРЫ
-                { keywords: ['5500', 'ryzen 5 5500'], title: "Статус: Родное железо ЛОС (AMD Ryzen 5 5500)", desc: "База разработки LemonovOS! Планировщик ядра Zen идеально распределяет нагрузку по его 6 ядрам. Рекомендуется активировать PBO в BIOS." },
-                { keywords: ['ryzen 9', 'ryzen 7', 'zen 4', '7950x', '7800x3d', '7700x', '7600x'], title: "Статус: Ультра-топ (AMD Zen 4)", desc: "Новейшая архитектура AMD. Ядро Zen раскроет весь потенциал. Включите поддержку AMD Pstate для идеального контроля частот." },
-                { keywords: ['ryzen', 'zen'], title: "Статус: Отлично (AMD Ryzen)", desc: "Ядро Zen оптимизировано специально для этих процессоров. Ожидайте максимальную отзывчивость системы и минимальные задержки." },
-                { keywords: ['core ultra', '14900', '14700', '13900', '13700', '12900', '12700', '14th gen', '13th gen', '12th gen'], title: "Статус: Поддерживается (Intel Big.LITTLE)", desc: "Современные процессоры Intel с E- и P-ядрами отлично работают на свежих ядрах Linux (6.6+). Планировщик корректно распределит фоновые задачи на энергоэффективные ядра." },
-                { keywords: ['intel core', 'i9', 'i7', 'i5', 'i3'], title: "Статус: Нативно (Intel Core)", desc: "Классическая архитектура Intel поддерживается из коробки. Рекомендуется использовать профиль intel_pstate для лучшего энергосбережения." },
-                { keywords: ['xeon', 'threadripper', 'epyc'], title: "Статус: Серверное железо (HEDT/Server)", desc: "Мощности хватит на всё. Рекомендуется собрать кастомное ядро под ваши конкретные нужды, так как базовое ядро Zen ориентировано на десктоп." },
-
-                // ВИДЕОКАРТЫ - NVIDIA
-                { keywords: ['rtx 4090', 'rtx 4080', 'rtx 4070', 'rtx 4060', 'ada lovelace'], title: "Статус: Идеально (NVIDIA RTX 40-серии)", desc: "Новейшая архитектура Ada. Установщик Juicer поставит драйвер nvidia-dkms. Wayland, DLSS3 и аппаратное ускорение будут работать на 100%." },
-                { keywords: ['rtx 3090', 'rtx 3080', 'rtx 3070', 'rtx 3060', 'rtx 3050', 'ampere'], title: "Статус: Отлично (NVIDIA RTX 30-серии)", desc: "Архитектура Ampere. Драйвера nvidia-utils обеспечат отличную работу как в X11, так и в Wayland. Поддержка NVENC и DLSS из коробки." },
-                { keywords: ['rtx 2080', 'rtx 2070', 'rtx 2060', 'turing'], title: "Статус: Хорошо (NVIDIA RTX 20-серии)", desc: "Turing-архитектура полностью поддерживается официальными проприетарными драйверами." },
-                { keywords: ['gtx 1660', 'gtx 1650', '1650 super'], title: "Статус: Проверено (NVIDIA GTX 16-серии)", desc: "Рабочая лошадка! Juicer установит стабильную ветку драйверов nvidia-dkms. Отличная связка с рабочим окружением XFCE4." },
-                { keywords: ['gtx 1080', 'gtx 1070', 'gtx 1060', 'gtx 1050', 'pascal'], title: "Статус: Устаревает (NVIDIA GTX 10-серии)", desc: "Архитектура Pascal не поддерживает некоторые современные функции Wayland в полной мере. Рекомендуется использовать сессию X11 (например, XFCE4) для лучшей производительности." },
-                { keywords: ['gtx 980', 'gtx 970', 'gtx 960', 'gtx 750', 'maxwell'], title: "Статус: Легаси (NVIDIA Legacy)", desc: "Внимание: новые драйвера могут отказаться от поддержки. Возможно, потребуется ручная установка драйверов ветки 470xx из AUR." },
-
-                // ВИДЕОКАРТЫ - AMD
-                { keywords: ['rx 7900', 'rx 7800', 'rx 7700', 'rx 7600', 'rdna 3'], title: "Статус: Идеально (AMD RDNA 3)", desc: "Свежая архитектура AMD. Абсолютно лучшая нативная поддержка в Linux через драйвер mesa. Wayland будет работать безупречно." },
-                { keywords: ['rx 6900', 'rx 6800', 'rx 6700', 'rx 6600', 'rx 6500', 'rdna 2'], title: "Статус: Отлично (AMD RDNA 2)", desc: "Всё работает из коробки. Открытые драйверы amdgpu и mesa обеспечат максимальный FPS и стабильность." },
-                { keywords: ['rx 5700', 'rx 5600', 'rx 5500', 'rdna 1'], title: "Статус: Хорошо (AMD RDNA 1)", desc: "Полная интеграция в ядро Linux. Поддержка Vulkan (RADV) на высшем уровне." },
-                { keywords: ['rx 580', 'rx 570', 'rx 480', 'rx 470', 'polaris'], title: "Статус: Легенда (AMD Polaris)", desc: "Старые добрые Polaris отлично работают на открытых драйверах amdgpu. Система вдохнет в эту карточку вторую жизнь." },
-                { keywords: ['vega 56', 'vega 64', 'radeon vii'], title: "Статус: Поддерживается (AMD Vega)", desc: "Архитектура Vega полностью поддерживается драйвером amdgpu." },
-
-                // ВИДЕОКАРТЫ - INTEL
-                { keywords: ['arc a770', 'arc a750', 'arc a580', 'arc a380'], title: "Статус: Экспериментально (Intel Arc)", desc: "Новейшие дискретные видеокарты Intel. Драйверы i915/xe встроены в ядро, но для максимальной стабильности потребуется самое свежее ядро (6.6+)." },
-                { keywords: ['iris xe', 'uhd graphics', 'hd graphics'], title: "Статус: Нативно (Встройка Intel)", desc: "Встроенная графика Intel работает без лишних телодвижений. Аппаратное ускорение видео (VA-API) активно по умолчанию." },
-
-                // ARM И НЕСТАНДАРТНЫЕ ПЛАТФОРМЫ
-                { keywords: ['apple m1', 'apple m2', 'apple m3', 'macbook'], title: "Статус: Несовместимо (Apple Silicon)", desc: "LemonovOS разрабатывается под архитектуру x86_64. Для установки на ARM-чипы Apple вам нужен сторонний проект Asahi Linux." },
-                { keywords: ['raspberry', 'snapdragon'], title: "Статус: Несовместимо (ARM)", desc: "Текущий билд LemonovOS поддерживает только классические ПК на архитектуре x86_64." }
+                { keywords: ['5500', 'ryzen 5 5500'], title: "Статус: РОДНОЕ ЖЕЛЕЗО 👑 (AMD Ryzen 5 5500)", desc: "База разработки LemonovOS! Планировщик ядра Zen идеально распределяет нагрузку по его 6 ядрам. Система вылизана под этот камень." },
+                { keywords: ['ryzen 9000', 'zen 5', '9950x', '9900x', '9700x'], title: "Статус: Next-Gen (AMD Zen 5)", desc: "Свежайшая архитектура. Ядро Zen 6.x+ имеет все необходимые патчи для работы с этими монстрами. Включайте Pstate." },
+                { keywords: ['ryzen 7000', 'ryzen 8000', 'zen 4', '7950x', '7800x3d', '7700x', '7600x'], title: "Статус: Ультра-топ (AMD Zen 4)", desc: "Шикарная производительность. Ядро отлично понимает 3D V-Cache (если у вас X3D версия) и правильно раскидывает потоки." },
+                { keywords: ['ryzen 5000', 'zen 3', '5950x', '5900x', '5800x3d', '5800x', '5700x', '5600x', '5600'], title: "Статус: Идеально (AMD Zen 3)", desc: "Золотой стандарт. Максимальная совместимость и нулевые задержки. Рекомендуется активировать AMD PBO в BIOS." },
+                { keywords: ['ryzen 3000', 'zen 2', '3950x', '3900x', '3800x', '3700x', '3600', '3100'], title: "Статус: Отлично (AMD Zen 2)", desc: "Всё работает как часы. Производительность в Linux на этих камнях часто выше, чем в Windows." },
+                { keywords: ['ryzen 2000', 'ryzen 1000', 'zen+', '1600', '2600', '1700', '2700'], title: "Статус: Хорошо (AMD Zen/Zen+)", desc: "Первые поколения Ryzen отлично себя чувствуют. ZRAM очень поможет, если у вас медленная старая DDR4 память." },
+                { keywords: ['threadripper', 'epyc'], title: "Статус: Сервер/HEDT (AMD Threadripper/EPYC)", desc: "Мощности с избытком, но ядро LemonovOS (Zen) настроено под десктопные задачи и низкий инпут-лаг, а не под числодробилки." },
+                { keywords: ['fx', 'phenom', 'athlon', 'bulldozer', 'piledriver'], title: "Статус: Устарело ⚠️ (AMD Legacy)", desc: "Архитектура до эры Ryzen. Работать будет, но ядро Linux уже давно не получает оптимизаций под эти чипы. Готовьтесь к просадкам.", color: "var(--warning)" },
+                { keywords: ['core ultra', 'meteor lake', 'arrow lake', '285k', '265k', '245k'], title: "Статус: Next-Gen (Intel Core Ultra)", desc: "Новая архитектура чиплетов. Обязательно нужно свежее ядро (6.8+), которое есть в последних сборках ЛОС, для правильной работы NPU и планировщика." },
+                { keywords: ['14900', '14700', '14600', '14th gen', '13900', '13700', '13600', '13400', '13th gen', '12900', '12700', '12600', '12400', '12th gen'], title: "Статус: Отлично (Intel Big.LITTLE)", desc: "Архитектура с E-ядрами и P-ядрами. Планировщик Linux научился с ними работать, Thread Director корректно кидает игры на большие ядра." },
+                { keywords: ['11900', '11700', '11600', '11400', '11th gen', '10900', '10700', '10600', '10400', '10th gen', '9900', '9700', '9600', '9th gen'], title: "Статус: Нативно (Intel 9-11 Gen)", desc: "Классические многоядерники Intel. Идеальная стабильность, никаких проблем с планировщиком. Профиль intel_pstate работает шикарно." },
+                { keywords: ['8700', '8600', '8400', '8th gen', '7700', '7600', '7th gen', '6700', '6600', '6th gen'], title: "Статус: Проверено временем (Intel 6-8 Gen)", desc: "Старые добрые камни. ЛОС будет летать, так как вырезан весь фоновый мусор винды, который грузил эти процессоры на 100%." },
+                { keywords: ['4790', '4770', '4th gen', '3770', '3rd gen', '2600k', '2nd gen', 'xeon e3', 'xeon e5'], title: "Статус: Динозавр 🦖 (Intel Legacy)", desc: "Легенды на 1155/1150 сокетах. XFCE4 окружение вернет им вторую молодость. Но тяжелые веб-приложения уже будут подлагивать." },
+                { keywords: ['pentium', 'celeron', 'atom'], title: "Статус: Слабое звено ⚠️ (Intel Low-End)", desc: "ОС запустится, ZRAM спасет от нехватки памяти, но чудес от 2-ядерных затычек не ждите. Только XFCE4.", color: "var(--warning)" },
+                { keywords: ['rtx 5090', 'rtx 5080', 'rtx 5070', 'blackwell'], title: "Статус: Новинка (NVIDIA Blackwell)", desc: "Если вы из будущего, то знайте — Juicer подтянет свежайшие драйвера. Но на старте продаж в Linux могут быть мелкие баги." },
+                { keywords: ['rtx 4090', 'rtx 4080', 'rtx 4070', 'rtx 4060', 'ada lovelace'], title: "Статус: Идеально (NVIDIA Ada Lovelace)", desc: "Установщик Juicer поставит драйвер nvidia-dkms. Wayland сессия (Hyprland/KDE), NVENC в OBS и аппаратное ускорение заведены на 100%." },
+                { keywords: ['rtx 3090', 'rtx 3080', 'rtx 3070', 'rtx 3060', 'rtx 3050', 'ampere'], title: "Статус: Отлично (NVIDIA Ampere)", desc: "Драйвера nvidia-utils обеспечат отличную работу как в X11, так и в Wayland. Никаких проблем с играми через Proton." },
+                { keywords: ['rtx 2080', 'rtx 2070', 'rtx 2060', 'turing'], title: "Статус: Хорошо (NVIDIA Turing)", desc: "Архитектура Turing полностью и без проблем поддерживается актуальными проприетарными драйверами." },
+                { keywords: ['gtx 1660', 'gtx 1650', '1650 super'], title: "Статус: Рабочая лошадка 🐎 (NVIDIA 16-серии)", desc: "Juicer установит стабильную ветку драйверов nvidia-dkms. Для XFCE4 — вообще сказка, для Wayland — приемлемо." },
+                { keywords: ['gtx 1080', 'gtx 1070', 'gtx 1060', 'gtx 1050', 'pascal'], title: "Статус: Устаревает ⚠️ (NVIDIA Pascal)", desc: "Архитектура Pascal плохо переваривает Wayland (нет нормальной поддержки явной синхронизации). Обязательно используйте классическую сессию X11 (XFCE4).", color: "var(--warning)" },
+                { keywords: ['gtx 980', 'gtx 970', 'gtx 960', 'gtx 950', 'maxwell'], title: "Статус: Легаси 💀 (NVIDIA Maxwell)", desc: "Актуальные драйвера (550+) могут начать дропать поддержку. Возможно, потребуется ручная установка ветки 470xx из AUR.", color: "var(--danger)" },
+                { keywords: ['gtx 780', 'gtx 770', 'gtx 760', 'gtx 750', 'gtx 6', 'gtx 5', 'kepler', 'fermi'], title: "Статус: Мёртвая зона 🪦 (NVIDIA Kepler/Fermi)", desc: "Проприетарные драйвера больше не поддерживают эти карты. Система загрузится на открытом драйвере Nouveau (только отрисовка рабочего стола, про игры забудьте).", color: "var(--danger)" },
+                { keywords: ['rx 8900', 'rx 8800', 'rx 8700', 'rx 8600', 'rdna 4'], title: "Статус: Next-Gen (AMD RDNA 4)", desc: "Если драйвера mesa уже обновились в репозиториях Arch, то всё заработает из коробки на максималках." },
+                { keywords: ['rx 7900', 'rx 7800', 'rx 7700', 'rx 7600', 'rdna 3'], title: "Статус: Идеально (AMD RDNA 3)", desc: "Свежая архитектура AMD. Абсолютно лучшая нативная поддержка в Linux через драйвер mesa. Wayland/Hyprland будет работать безупречно." },
+                { keywords: ['rx 6900', 'rx 6800', 'rx 6700', 'rx 6600', 'rx 6500', 'rdna 2'], title: "Статус: Отлично (AMD RDNA 2)", desc: "Всё работает из коробки. Открытые драйверы amdgpu обеспечат максимальный FPS и стабильность без шаманств." },
+                { keywords: ['rx 5700', 'rx 5600', 'rx 5500', 'rdna 1'], title: "Статус: Хорошо (AMD RDNA 1)", desc: "Полная интеграция в ядро Linux. Поддержка Vulkan (RADV) на высшем уровне для Proton-гейминга." },
+                { keywords: ['rx 580', 'rx 570', 'rx 480', 'rx 470', 'polaris'], title: "Статус: Легенда 🐐 (AMD Polaris)", desc: "Старые добрые рыксы! Отлично работают на драйверах amdgpu. Система вдохнет в эту карточку вторую жизнь." },
+                { keywords: ['vega 56', 'vega 64', 'radeon vii'], title: "Статус: Поддерживается (AMD Vega)", desc: "Архитектура Vega полностью поддерживается открытым драйвером amdgpu." },
+                { keywords: ['r9', 'r7', 'hd 7000', 'hd 6000', 'gcn'], title: "Статус: Легаси ⚠️ (AMD GCN)", desc: "По умолчанию используется старый драйвер 'radeon'. Для нормальной работы Vulkan (и игр) придется вручную форсировать включение драйвера 'amdgpu' в параметрах ядра.", color: "var(--warning)" },
+                { keywords: ['arc a770', 'arc a750', 'arc a580', 'arc a380', 'arc b', 'battlemage', 'alchemist'], title: "Статус: Экспериментально (Intel Arc)", desc: "Драйверы i915 и новый Xe встроены в ядро. Кодеки AV1 работают, но в играх через Proton (DXVK) могут быть глитчи." },
+                { keywords: ['iris xe', 'uhd graphics', 'hd graphics', 'intel graphics'], title: "Статус: Нативно (Встройка Intel)", desc: "Встроенная графика Intel работает без лишних телодвижений. Аппаратное ускорение видео (VA-API/Intel QuickSync) в браузере активно по умолчанию." },
+                { keywords: ['apple m1', 'apple m2', 'apple m3', 'apple m4', 'macbook', 'mac mini'], title: "Статус: Несовместимо ❌ (Apple Silicon)", desc: "LemonovOS собирается под x86_64. На макбуки с ARM-чипами это не поставить. Вам нужен проект Asahi Linux.", color: "var(--danger)" },
+                { keywords: ['raspberry', 'snapdragon', 'mediatek', 'arm'], title: "Статус: Несовместимо ❌ (ARM)", desc: "Текущий билд LemonovOS поддерживает только классические ПК. Сборок под ARM-устройства нет.", color: "var(--danger)" },
+                { keywords: ['эльбрус', 'байкал', 'elbrus', 'baikal'], title: "Статус: Импортозамещение 🐻 (Российские ЦПУ)", desc: "Наш слоняра! Но нет, архитектуры E2K и MIPS/ARM не поддерживаются нашими образами ISO. Ставьте Astra Linux.", color: "var(--danger)" }
             ];
 
-            // 1. Поиск конкретной карточки в БД
             const exactMatch = hardwareDatabase.find(item => 
                 item.keywords.some(keyword => val.includes(keyword))
             );
@@ -851,28 +864,30 @@
             if (exactMatch) {
                 resTitle.textContent = exactMatch.title;
                 resDesc.textContent = exactMatch.desc;
+                if (exactMatch.color) resTitle.style.color = exactMatch.color;
                 return;
             }
 
-            // 2. Резервный умный поиск по бренду, если точной модели нет
-            if(val.match(/nvidia|rtx|gtx|quadro/)) {
-                resTitle.textContent = "Статус: Идеально (NVIDIA)";
-                resDesc.textContent = "Juicer автоматически установит проприетарные драйверы nvidia-dkms. Поддержка Wayland включена.";
-            } else if(val.match(/amd|radeon|rx|ryzen/)) {
-                resTitle.textContent = "Статус: Нативно (AMD)";
-                resDesc.textContent = "Открытые драйверы amdgpu и mesa обеспечат лучшую нативную поддержку прямо из коробки.";
-            } else if(val.match(/intel|arc|hd graphics|uhd|core/)) {
-                resTitle.textContent = "Статус: Отлично (Intel)";
-                resDesc.textContent = "Драйверы Intel встроены. Аппаратное ускорение видео будет работать сразу.";
-            } else {
-                resTitle.textContent = "Статус: Нормально";
-                resDesc.textContent = "Скорее всего, ваше оборудование поддерживается встроенными драйверами ядра Linux.";
+            if(val.match(/nvidia|geforce|quadro/)) {
+                resTitle.textContent = "Статус: Найдено (NVIDIA)";
+                resDesc.textContent = "Точную модель определить не удалось, но видеокарты NVIDIA поддерживаются. Установщик сам скачает проприетарные драйвера nvidia-dkms.";
+                return;
+            } else if(val.match(/amd|radeon/)) {
+                resTitle.textContent = "Статус: Найдено (AMD)";
+                resDesc.textContent = "Точную модель не вижу, но открытые драйверы amdgpu и mesa обеспечат нативную поддержку любых свежих карт AMD.";
+                return;
+            } else if(val.match(/intel|core i/)) {
+                resTitle.textContent = "Статус: Найдено (Intel)";
+                resDesc.textContent = "Системы на базе Intel отлично работают. Драйверы ядра закроют все потребности в аппаратном ускорении.";
+                return;
             }
+
+            resTitle.textContent = "Статус: Неизвестное устройство ❓";
+            resTitle.style.color = "var(--warning)";
+            resDesc.textContent = "Я не нашел это железо в базе. Убедись, что ты ввел реальную модель видеокарты (GTX/RTX/RX) или процессора (Ryzen/Core). Если это какой-то китайский франкенштейн с Алиэкспресса — ставь на свой страх и риск.";
         }
 
-        // ИЗМЕНЕНО: Добавлена функция фильтрации для Changelog
         function filterChangelog(type, event) {
-            // Переключаем активный класс у кнопок фильтра
             event.target.parentElement.querySelectorAll('.de-tab').forEach(t => t.classList.remove('active'));
             event.target.classList.add('active');
 
@@ -940,7 +955,6 @@
         }
         getChangelog();
 
-        // СЕКРЕТНАЯ ПАСХАЛКА 2 (SUDO)
         let keysPressed = '';
         window.addEventListener('keydown', (e) => {
             keysPressed += e.key.toLowerCase();
