@@ -235,7 +235,7 @@
 
         .timeline { position: relative; padding-left: 30px; margin-top: 30px; }
         .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--border); border-radius: 2px; }
-        .tl-item { position: relative; margin-bottom: 40px; }
+        .tl-item { position: relative; margin-bottom: 40px; transition: opacity 0.3s ease; }
         .tl-dot { position: absolute; left: -36px; top: 0; width: 14px; height: 14px; border-radius: 50%; background: var(--bg-base); border: 2px solid var(--accent); z-index: 2; }
         .tl-content { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 24px; transition: var(--transition); }
         .tl-content:hover { border-color: var(--border-highlight); background: var(--card-hover); }
@@ -614,6 +614,14 @@
                     <p class="subtitle">Лайв-лента апдейтов напрямую из трекера на GitHub.</p>
                 </div>
 
+                <div class="de-tabs" style="margin-bottom: 30px;">
+                    <button class="de-tab active" onclick="filterChangelog('ALL', event)">Все апдейты</button>
+                    <button class="de-tab" style="border-color: rgba(166, 227, 161, 0.3);" onclick="filterChangelog('FIX', event)">Фиксы (+)</button>
+                    <button class="de-tab" style="border-color: rgba(243, 139, 168, 0.3);" onclick="filterChangelog('BUG', event)">Баги (-)</button>
+                    <button class="de-tab" style="border-color: rgba(249, 226, 175, 0.3);" onclick="filterChangelog('ALERT', event)">Алерты (!)</button>
+                    <button class="de-tab" style="border-color: rgba(203, 166, 247, 0.3);" onclick="filterChangelog('FEATURE', event)">Фичи (*)</button>
+                </div>
+
                 <div class="timeline" id="issues-container">
                     <div class="tl-item"><div class="tl-dot"></div><div class="tl-content" style="color: var(--text-muted)">Синхронизация...</div></div>
                 </div>
@@ -792,29 +800,95 @@
             }
         }
 
+        // ИЗМЕНЕНО: Огромная база данных железа для калькулятора совместимости
         function checkHardware() {
-            const val = document.getElementById('hw-input').value.toLowerCase();
+            const val = document.getElementById('hw-input').value.trim().toLowerCase();
             const resBox = document.getElementById('hw-result');
             const resTitle = document.getElementById('hw-result-title');
             const resDesc = document.getElementById('hw-result-desc');
             
             if(!val) return;
-            
             resBox.classList.add('active');
-            
+
+            const hardwareDatabase = [
+                // ПРОЦЕССОРЫ
+                { keywords: ['5500', 'ryzen 5 5500'], title: "Статус: Родное железо ЛОС (AMD Ryzen 5 5500)", desc: "База разработки LemonovOS! Планировщик ядра Zen идеально распределяет нагрузку по его 6 ядрам. Рекомендуется активировать PBO в BIOS." },
+                { keywords: ['ryzen 9', 'ryzen 7', 'zen 4', '7950x', '7800x3d', '7700x', '7600x'], title: "Статус: Ультра-топ (AMD Zen 4)", desc: "Новейшая архитектура AMD. Ядро Zen раскроет весь потенциал. Включите поддержку AMD Pstate для идеального контроля частот." },
+                { keywords: ['ryzen', 'zen'], title: "Статус: Отлично (AMD Ryzen)", desc: "Ядро Zen оптимизировано специально для этих процессоров. Ожидайте максимальную отзывчивость системы и минимальные задержки." },
+                { keywords: ['core ultra', '14900', '14700', '13900', '13700', '12900', '12700', '14th gen', '13th gen', '12th gen'], title: "Статус: Поддерживается (Intel Big.LITTLE)", desc: "Современные процессоры Intel с E- и P-ядрами отлично работают на свежих ядрах Linux (6.6+). Планировщик корректно распределит фоновые задачи на энергоэффективные ядра." },
+                { keywords: ['intel core', 'i9', 'i7', 'i5', 'i3'], title: "Статус: Нативно (Intel Core)", desc: "Классическая архитектура Intel поддерживается из коробки. Рекомендуется использовать профиль intel_pstate для лучшего энергосбережения." },
+                { keywords: ['xeon', 'threadripper', 'epyc'], title: "Статус: Серверное железо (HEDT/Server)", desc: "Мощности хватит на всё. Рекомендуется собрать кастомное ядро под ваши конкретные нужды, так как базовое ядро Zen ориентировано на десктоп." },
+
+                // ВИДЕОКАРТЫ - NVIDIA
+                { keywords: ['rtx 4090', 'rtx 4080', 'rtx 4070', 'rtx 4060', 'ada lovelace'], title: "Статус: Идеально (NVIDIA RTX 40-серии)", desc: "Новейшая архитектура Ada. Установщик Juicer поставит драйвер nvidia-dkms. Wayland, DLSS3 и аппаратное ускорение будут работать на 100%." },
+                { keywords: ['rtx 3090', 'rtx 3080', 'rtx 3070', 'rtx 3060', 'rtx 3050', 'ampere'], title: "Статус: Отлично (NVIDIA RTX 30-серии)", desc: "Архитектура Ampere. Драйвера nvidia-utils обеспечат отличную работу как в X11, так и в Wayland. Поддержка NVENC и DLSS из коробки." },
+                { keywords: ['rtx 2080', 'rtx 2070', 'rtx 2060', 'turing'], title: "Статус: Хорошо (NVIDIA RTX 20-серии)", desc: "Turing-архитектура полностью поддерживается официальными проприетарными драйверами." },
+                { keywords: ['gtx 1660', 'gtx 1650', '1650 super'], title: "Статус: Проверено (NVIDIA GTX 16-серии)", desc: "Рабочая лошадка! Juicer установит стабильную ветку драйверов nvidia-dkms. Отличная связка с рабочим окружением XFCE4." },
+                { keywords: ['gtx 1080', 'gtx 1070', 'gtx 1060', 'gtx 1050', 'pascal'], title: "Статус: Устаревает (NVIDIA GTX 10-серии)", desc: "Архитектура Pascal не поддерживает некоторые современные функции Wayland в полной мере. Рекомендуется использовать сессию X11 (например, XFCE4) для лучшей производительности." },
+                { keywords: ['gtx 980', 'gtx 970', 'gtx 960', 'gtx 750', 'maxwell'], title: "Статус: Легаси (NVIDIA Legacy)", desc: "Внимание: новые драйвера могут отказаться от поддержки. Возможно, потребуется ручная установка драйверов ветки 470xx из AUR." },
+
+                // ВИДЕОКАРТЫ - AMD
+                { keywords: ['rx 7900', 'rx 7800', 'rx 7700', 'rx 7600', 'rdna 3'], title: "Статус: Идеально (AMD RDNA 3)", desc: "Свежая архитектура AMD. Абсолютно лучшая нативная поддержка в Linux через драйвер mesa. Wayland будет работать безупречно." },
+                { keywords: ['rx 6900', 'rx 6800', 'rx 6700', 'rx 6600', 'rx 6500', 'rdna 2'], title: "Статус: Отлично (AMD RDNA 2)", desc: "Всё работает из коробки. Открытые драйверы amdgpu и mesa обеспечат максимальный FPS и стабильность." },
+                { keywords: ['rx 5700', 'rx 5600', 'rx 5500', 'rdna 1'], title: "Статус: Хорошо (AMD RDNA 1)", desc: "Полная интеграция в ядро Linux. Поддержка Vulkan (RADV) на высшем уровне." },
+                { keywords: ['rx 580', 'rx 570', 'rx 480', 'rx 470', 'polaris'], title: "Статус: Легенда (AMD Polaris)", desc: "Старые добрые Polaris отлично работают на открытых драйверах amdgpu. Система вдохнет в эту карточку вторую жизнь." },
+                { keywords: ['vega 56', 'vega 64', 'radeon vii'], title: "Статус: Поддерживается (AMD Vega)", desc: "Архитектура Vega полностью поддерживается драйвером amdgpu." },
+
+                // ВИДЕОКАРТЫ - INTEL
+                { keywords: ['arc a770', 'arc a750', 'arc a580', 'arc a380'], title: "Статус: Экспериментально (Intel Arc)", desc: "Новейшие дискретные видеокарты Intel. Драйверы i915/xe встроены в ядро, но для максимальной стабильности потребуется самое свежее ядро (6.6+)." },
+                { keywords: ['iris xe', 'uhd graphics', 'hd graphics'], title: "Статус: Нативно (Встройка Intel)", desc: "Встроенная графика Intel работает без лишних телодвижений. Аппаратное ускорение видео (VA-API) активно по умолчанию." },
+
+                // ARM И НЕСТАНДАРТНЫЕ ПЛАТФОРМЫ
+                { keywords: ['apple m1', 'apple m2', 'apple m3', 'macbook'], title: "Статус: Несовместимо (Apple Silicon)", desc: "LemonovOS разрабатывается под архитектуру x86_64. Для установки на ARM-чипы Apple вам нужен сторонний проект Asahi Linux." },
+                { keywords: ['raspberry', 'snapdragon'], title: "Статус: Несовместимо (ARM)", desc: "Текущий билд LemonovOS поддерживает только классические ПК на архитектуре x86_64." }
+            ];
+
+            // 1. Поиск конкретной карточки в БД
+            const exactMatch = hardwareDatabase.find(item => 
+                item.keywords.some(keyword => val.includes(keyword))
+            );
+
+            if (exactMatch) {
+                resTitle.textContent = exactMatch.title;
+                resDesc.textContent = exactMatch.desc;
+                return;
+            }
+
+            // 2. Резервный умный поиск по бренду, если точной модели нет
             if(val.match(/nvidia|rtx|gtx|quadro/)) {
                 resTitle.textContent = "Статус: Идеально (NVIDIA)";
-                resDesc.textContent = "Juicer автоматически установит проприетарные драйверы nvidia-dkms и nvidia-utils. Поддержка Wayland и модулей DRM включена по умолчанию.";
+                resDesc.textContent = "Juicer автоматически установит проприетарные драйверы nvidia-dkms. Поддержка Wayland включена.";
             } else if(val.match(/amd|radeon|rx|ryzen/)) {
                 resTitle.textContent = "Статус: Нативно (AMD)";
-                resDesc.textContent = "Juicer установит открытые драйверы xf86-video-amdgpu и mesa. У вас будет лучшая нативная поддержка Wayland прямо из коробки.";
+                resDesc.textContent = "Открытые драйверы amdgpu и mesa обеспечат лучшую нативную поддержку прямо из коробки.";
             } else if(val.match(/intel|arc|hd graphics|uhd|core/)) {
                 resTitle.textContent = "Статус: Отлично (Intel)";
-                resDesc.textContent = "Juicer установит драйверы xf86-video-intel и необходимые пакеты mesa. Аппаратное ускорение видео будет работать сразу.";
+                resDesc.textContent = "Драйверы Intel встроены. Аппаратное ускорение видео будет работать сразу.";
             } else {
                 resTitle.textContent = "Статус: Нормально";
-                resDesc.textContent = "Скорее всего, ваше оборудование поддерживается встроенными драйверами ядра Linux. Система загрузится на базовых драйверах.";
+                resDesc.textContent = "Скорее всего, ваше оборудование поддерживается встроенными драйверами ядра Linux.";
             }
+        }
+
+        // ИЗМЕНЕНО: Добавлена функция фильтрации для Changelog
+        function filterChangelog(type, event) {
+            // Переключаем активный класс у кнопок фильтра
+            event.target.parentElement.querySelectorAll('.de-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const items = document.querySelectorAll('#issues-container .tl-item');
+            items.forEach(item => {
+                if (type === 'ALL') {
+                    item.style.display = 'block';
+                } else {
+                    const badge = item.querySelector('.tl-badge');
+                    if (badge && badge.textContent === type) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                }
+            });
         }
 
         async function getChangelog() {
