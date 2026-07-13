@@ -479,7 +479,7 @@
                     Продолжая загрузку, вы подтверждаете понимание того, что команда разработчиков не несет юридической ответственности за возможную потерю данных или нештатную работу оборудования. Рекомендуем сделать резервные копии важных файлов перед установкой ОС.
                 </p>
                 <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                    <a href="https://download.lemonovos.com/lemonovos-16.06.26-x86_64.iso" class="btn btn-primary" style="flex: 1; text-align: center; min-width: 200px;" onclick="document.getElementById('disclaimer-modal').classList.remove('active')">
+                    <a href="https://download.lemonovos.com/lemonovos-13.07.26-x86_64.iso" class="btn btn-primary" style="flex: 1; text-align: center; min-width: 200px;" onclick="document.getElementById('disclaimer-modal').classList.remove('active')">
                         Принимаю, скачать ISO
                     </a>
                     <button class="btn btn-outline" style="flex: 1; min-width: 120px;" onclick="document.getElementById('disclaimer-modal').classList.remove('active')">
@@ -845,7 +845,7 @@
                         <div class="hash-wrapper">
                             <div class="hash-title">Контрольная сумма (SHA256) для проверки целостности:</div>
                             <div class="hash-box" onclick="copyHash()">
-                                <span id="iso-hash">22ec4b23a1f05c41f3efd96d5b0dcfd41494b18ab833625ba59f93f332cd3185  lemonovos-16.06.26-x86_64.iso
+                                <span id="iso-hash">90f2f07aa4e4d8eb2da703d58c8e592ca819a70d1e99aeffd99207b77c549d94
 </span>
                                 <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                             </div>
@@ -1136,7 +1136,7 @@
 
         function copyHash() {
             const hashText = document.getElementById('iso-hash').innerText;
-            navigator.clipboard.writeText('22ec4b23a1f05c41f3efd96d5b0dcfd41494b18ab833625ba59f93f332cd3185');
+            navigator.clipboard.writeText('90f2f07aa4e4d8eb2da703d58c8e592ca819a70d1e99aeffd99207b77c549d94');
             alert('SHA256 хеш скопирован в буфер обмена!');
         }
 
