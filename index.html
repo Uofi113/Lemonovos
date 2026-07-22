@@ -479,7 +479,7 @@
                     Продолжая загрузку, вы подтверждаете понимание того, что команда разработчиков не несет юридической ответственности за возможную потерю данных или нештатную работу оборудования. Рекомендуем сделать резервные копии важных файлов перед установкой ОС.
                 </p>
                 <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                    <a href="https://download.lemonovos.com/lemonovos-19.07.26-x86_64.iso" class="btn btn-primary" style="flex: 1; text-align: center; min-width: 200px;" onclick="document.getElementById('disclaimer-modal').classList.remove('active')">
+                    <a href="https://download.lemonovos.com/lemonovos-22.07.26-x86_64.iso" class="btn btn-primary" style="flex: 1; text-align: center; min-width: 200px;" onclick="document.getElementById('disclaimer-modal').classList.remove('active')">
                         Принимаю, скачать ISO
                     </a>
                     <button class="btn btn-outline" style="flex: 1; min-width: 120px;" onclick="document.getElementById('disclaimer-modal').classList.remove('active')">
@@ -837,7 +837,7 @@
                                 <div class="dl-stat-lbl">Установщик</div>
                             </div>
                             <div class="dl-stat-box">
-                                <div class="dl-stat-val"><span class="status-dot"></span>Offline</div>
+                                <div class="dl-stat-val"><span class="status-dot"></span>Online</div>
                                 <div class="dl-stat-lbl">Статус сервера</div>
                             </div>
                         </div>
@@ -845,7 +845,7 @@
                         <div class="hash-wrapper">
                             <div class="hash-title">Контрольная сумма (SHA256) для проверки целостности:</div>
                             <div class="hash-box" onclick="copyHash()">
-                                <span id="iso-hash">6fe243bec1a4cd8b707b94438db6e5b2cd70d70d66d051f476b6c85377fcaaf7
+                                <span id="iso-hash">f8e681e9920e290f128dbb75135363286a40946d057c3eb77544a0ada2263b22
 </span>
                                 <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                             </div>
@@ -1136,7 +1136,7 @@
 
         function copyHash() {
             const hashText = document.getElementById('iso-hash').innerText;
-            navigator.clipboard.writeText('6fe243bec1a4cd8b707b94438db6e5b2cd70d70d66d051f476b6c85377fcaaf7');
+            navigator.clipboard.writeText('f8e681e9920e290f128dbb75135363286a40946d057c3eb77544a0ada2263b22');
             alert('SHA256 хеш скопирован в буфер обмена!');
         }
 
