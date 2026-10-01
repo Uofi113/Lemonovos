@@ -11,7 +11,7 @@ groups:
         description: "Дополнительные инструменты для игроков."
         packages:
           - lutris
-          - heroic-games-launcher-bin
+          - heroic-games-launcher
           - bottles
 
   - name: "Интернет и Общение"
@@ -28,7 +28,6 @@ groups:
         packages:
           - telegram-desktop
           - discord
-          - vesktop # Тот же дискорд, но с работающим показом экрана в Wayland
 
   - name: "Работа с Медиа"
     description: "Воспроизведение и создание контента."
@@ -38,25 +37,29 @@ groups:
         description: "Чтобы открывалось любое видео."
         packages:
           - vlc
-          - mpv # Легкая альтернатива VLC
+          - mpv
           - gst-plugins-bad
+          - gst-plugins-ugly
           - libdvdcss
-          - pipewire-codec-aptx # Для качественного звука в Bluetooth ушах
+      - name: "Звук и Стриминг"
+        description: "Управление аудио и захват экрана."
+        packages:
+          - pavucontrol
+          - obs-studio
       - name: "Графика и Офис"
         description: "Базовый набор для работы."
         packages:
           - libreoffice-fresh
           - gimp
-          - obsidian # Для заметок
+          - obsidian
 
   - name: "Системные компоненты"
     description: "Важные дополнения для железа и ядра."
     critical: false
     subgroups:
-      - name: "Ядро и Разработка"
-        description: "Необходимо для сборки драйверов и софта."
+      - name: "Разработка"
+        description: "Инструменты для компиляции и сборки софта."
         packages:
-          - linux-zen-headers
           - base-devel
           - git
       - name: "Низкоуровневые либы (32-бит)"
@@ -67,19 +70,19 @@ groups:
           - lib32-vulkan-icd-loader
           - lib32-mesa
       - name: "Поддержка железа и ФС"
-        description: "То, что ты считал мусором, но иногда оно спасает (например, флешки)."
+        description: "Драйверы дисков, флешек и периферии."
         packages:
-          - exfatprogs # Чтобы работали флешки > 32ГБ
-          - bolt # Для работы Thunderbolt/Type-C док-станций
+          - exfatprogs
+          - bolt
           - ntfs-3g
-          - bat # Улучшенный 'cat' с подсветкой (в стиле LemonovOS)
+          - bat
 
   - name: "Продвинутая Сеть и Спасение"
     description: "Инструменты для тех, кто знает, что делает."
     critical: false
     subgroups:
-      - name: "Анализ и VPN"
-        description: "Сетевые утилиты."
+      - name: "Сетевая диагностика и протоколы"
+        description: "Утилиты мониторинга, сканирования и удаленных туннелей."
         packages:
           - nmap
           - tcpdump
@@ -90,17 +93,22 @@ groups:
         packages:
           - testdisk
           - ddrescue
-          - clonezilla
+          - partclone
 
   - name: "Консольный уголок (на любителя)"
-    description: "Тот самый 'мусор' и терминальные штуки."
+    description: "Терминальные штуки и утилиты."
     critical: false
     subgroups:
+      - name: "Мониторинг ресурсов"
+        description: "Красивый TUI-монитор системы."
+        packages:
+          - btop
       - name: "Текстовые редакторы"
         description: "Для правки конфигов руками."
         packages:
           - vim
-          - micro # Намного удобнее вима для новичков
+          - micro
+          - nano
       - name: "Терминальное ретро"
         description: "Lynx, IRC и прочее."
         packages:
