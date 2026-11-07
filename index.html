@@ -508,11 +508,11 @@ section.is-on .boot .ln{animation:ln .01s linear forwards}
       <div class="part">
         <div class="shots">
           <figure>
-            <button class="pic" type="button" aria-label="Открыть скриншот рабочего окружения"><img src="img/desktop-dark.jpg" data-dark="img/desktop-dark.jpg" data-light="img/desktop-light.jpg" alt="Рабочее окружение LemonovOS" loading="lazy" decoding="async"></button>
+            <button class="pic" type="button" aria-label="Открыть скриншот рабочего окружения"><img src="img/desktop-dark.webp" data-dark="img/desktop-dark.webp" data-light="img/desktop-light.webp" alt="Рабочее окружение LemonovOS" loading="lazy" decoding="async"></button>
             <figcaption>Рабочее окружение</figcaption>
           </figure>
           <figure>
-            <button class="pic" type="button" aria-label="Открыть скриншот терминала"><img src="img/terminal-dark.png" data-dark="img/terminal-dark.png" data-light="img/terminal-light.png" alt="Терминал с выводом fastfetch" loading="lazy" decoding="async"></button>
+            <button class="pic" type="button" aria-label="Открыть скриншот терминала"><img src="img/terminal-dark.webp" data-dark="img/terminal-dark.webp" data-light="img/terminal-light.webp" alt="Терминал с выводом fastfetch" loading="lazy" decoding="async"></button>
             <figcaption>Терминал и fastfetch</figcaption>
           </figure>
         </div>
@@ -548,7 +548,7 @@ section.is-on .boot .ln{animation:ln .01s linear forwards}
           <button class="tab" type="button" data-de="gnome" aria-pressed="false">GNOME</button>
           <button class="tab" type="button" data-de="xfce4" aria-pressed="false">XFCE4</button>
         </div>
-        <button class="pic" type="button" aria-label="Открыть скриншот окружения"><img id="de-img" src="img/desktop-dark.jpg" alt="KDE Plasma в LemonovOS" loading="lazy" decoding="async"></button>
+        <button class="pic" type="button" aria-label="Открыть скриншот окружения"><img id="de-img" src="img/desktop-dark.webp" alt="KDE Plasma в LemonovOS" loading="lazy" decoding="async"></button>
       </div>
 
       <div class="part">
@@ -610,10 +610,6 @@ section.is-on .boot .ln{animation:ln .01s linear forwards}
         <p class="lead">Сейчас здесь представлены скриншоты только от разработчиков, но понравившиеся работы из нашего Discord будут добавляться сюда.</p>
       </header>
       <div class="gal">
-        <figure>
-          <button class="pic" type="button" aria-label="Открыть: Custom Gnome from LOS team"><img src="img/gnome-custom.png" alt="Custom Gnome from LOS team" loading="lazy" decoding="async"></button>
-          <figcaption><h3>Custom Gnome from LOS team</h3><p>Официальный сетап рабочего окружения.</p></figcaption>
-        </figure>
         <a class="slot" href="https://discord.gg/6EvtKpqsCV" target="_blank" rel="noopener">
           <b>Здесь может быть ваш рабочий стол</b>
           <span>Покажите свой сетап в нашем Discord, лучшие работы попадут в галерею.</span>
@@ -1111,7 +1107,7 @@ total 0</pre>
   }));
 
   const deImg = document.getElementById('de-img');
-  const deSrc = { kde: 'img/desktop-dark.jpg', gnome: 'img/gnome-preview.png', xfce4: 'img/xfce-preview.png' };
+  const deSrc = { kde: 'img/desktop-dark.webp', gnome: 'img/gnome-preview.png', xfce4: 'img/xfce-preview.png' };
   const deTabs = [...document.querySelectorAll('[data-de]')];
   deTabs.forEach(tab => tab.addEventListener('click', () => {
     deTabs.forEach(x => {
