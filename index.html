@@ -472,14 +472,14 @@ section.is-on .boot .ln{animation:ln .01s linear forwards}
               <a class="btn" href="#features">Что под капотом</a>
             </div>
             <dl class="ff-kv">
-              <div data-step="5"><dt>OS</dt><dd>LemonovOS 0.8.5 RC x86_64</dd></div>
+              <div data-step="5"><dt>OS</dt><dd>LemonovOS Tarn RC x86_64</dd></div>
               <div data-step="6"><dt>Kernel</dt><dd>linux-zen</dd></div>
               <div data-step="7"><dt>Packages</dt><dd>pacman, AUR</dd></div>
               <div data-step="8"><dt>DE</dt><dd>KDE Plasma, GNOME, XFCE4</dd></div>
               <div data-step="9"><dt>Audio</dt><dd>PipeWire</dd></div>
               <div data-step="10"><dt>Swap</dt><dd>zram, zstd</dd></div>
               <div data-step="11"><dt>Disk (/)</dt><dd>btrfs, снапшоты перед обновлением</dd></div>
-              <div data-step="12"><dt>Installer</dt><dd>Juicer 1.3.3.7</dd></div>
+              <div data-step="12"><dt>Installer</dt><dd>Juicer 2</dd></div>
             </dl>
             <div class="ff-colors" data-step="13" aria-hidden="true"><i style="background:#15110d"></i><i style="background:#ea7b61"></i><i style="background:#a9c27e"></i><i style="background:#f2c14e"></i><i style="background:#7fa2ac"></i><i style="background:#c49bb0"></i><i style="background:#8fbfa8"></i><i style="background:#f0e6ce"></i></div>
           </div>
@@ -597,8 +597,8 @@ section.is-on .boot .ln{animation:ln .01s linear forwards}
 <span class="ps">$</span> systemctl poweroff</pre>
         </div>
         <ol class="road" aria-label="Дорожная карта">
-          <li class="done"><span class="v">v0.8.4 RC</span><span class="st">прошлая версия</span><p>Установщик Juicer, интеграция ZRAM, базовая оптимизация ядра Zen, мета-пакет lemonovos-gaming.</p></li>
-          <li class="wip"><span class="v">v0.8.5 Beta</span><span class="st">релиз</span><p>Оптимизация OOTB окружения.</p></li>
+          <li class="done"><span class="v">v0.8.5 RC</span><span class="st">прошлая версия</span><p>Установщик Juicer, интеграция ZRAM, базовая оптимизация ядра Zen.</p></li>
+          <li class="wip"><span class="v">Tarn Beta</span><span class="st">релиз</span><p>Оптимизация OOTB окружения.</p></li>
           <li><span class="v">v0.9 Stable</span><span class="st">в планах</span><p>?</p></li>
         </ol>
       </div>
@@ -627,7 +627,7 @@ section.is-on .boot .ln{animation:ln .01s linear forwards}
           <h2>Фреймворк установки Juicer</h2>
           <p>Написан с нуля на Python (PySide6). Полностью изолированная логика, которая автоматически определяет ваше железо, размечает UEFI/Legacy диски и скачивает оптимизированные пакеты через pacstrap.</p>
         </div>
-        <div class="boot" role="img" aria-label="Лог установщика Juicer: драйверы NVIDIA и initramfs готовы, идёт генерация конфига GRUB"><span class="ln hd">juicer 1.3.3.7</span><span class="ln"><span class="ok">[  OK  ]</span> Определение оборудования</span><span class="ln"><span class="ok">[  OK  ]</span> Разметка диска</span><span class="ln"><span class="ok">[  OK  ]</span> pacstrap: базовая система</span><span class="ln"><span class="ok">[  OK  ]</span> Инициализация драйверов NVIDIA-DKMS</span><span class="ln"><span class="ok">[  OK  ]</span> Сборка initramfs (mkinitcpio)</span><span class="ln"><span class="sd">[ ***  ]</span> Генерация GRUB конфига...</span></div>
+        <div class="boot" role="img" aria-label="Лог установщика Juicer: драйверы NVIDIA и initramfs готовы, идёт генерация конфига GRUB"><span class="ln hd">juicer 2</span><span class="ln"><span class="ok">[  OK  ]</span> Определение оборудования</span><span class="ln"><span class="ok">[  OK  ]</span> Разметка диска</span><span class="ln"><span class="ok">[  OK  ]</span> pacstrap: базовая система</span><span class="ln"><span class="ok">[  OK  ]</span> Инициализация драйверов NVIDIA-DKMS</span><span class="ln"><span class="ok">[  OK  ]</span> Сборка initramfs (mkinitcpio)</span><span class="ln"><span class="sd">[ ***  ]</span> Генерация GRUB конфига...</span></div>
       </div>
       <dl class="spec">
         <div><dt>ядро</dt><dd><h3>Linux-Zen</h3><p>Кастомное ядро, пропатченное для десктопа. Планировщик MuQSS и оптимизированный I/O дарят нулевой инпут-лаг в тяжелых играх и моментальный отклик интерфейса.</p></dd></div>
@@ -644,20 +644,20 @@ section.is-on .boot .ln{animation:ln .01s linear forwards}
       </header>
       <div class="dl">
         <div class="frame rel">
-          <span class="ttl">lemonovos-0.8.5-22.07.2026.iso</span>
-          <h2>v0.8.5 RC</h2>
+          <span class="ttl">lemonovos-tarn-x86_64.iso</span>
+          <h2>Tarn RC</h2>
           <p class="sub">Release Candidate</p>
           <dl class="kv">
             <dt>Ядро системы</dt><dd>Zen-Kernel</dd>
             <dt>Размер образа</dt><dd>2.3&nbsp;GB</dd>
-            <dt>Установщик</dt><dd>Juicer 1.3.3.7</dd>
+            <dt>Установщик</dt><dd>Juicer 2</dd>
             <dt>Статус сервера</dt><dd><span class="on"></span>online</dd>
           </dl>
           <div class="sum">
             <div class="sum-hd"><span>SHA256</span><button type="button" data-copy="iso-hash">Копировать</button></div>
-            <div class="sum-v" id="iso-hash">f8e681e9920e290f128dbb75135363286a40946d057c3eb77544a0ada2263b22</div>
+            <div class="sum-v" id="iso-hash">7cd0dcdeaf2c25ec1c6b3b393e186ce3ddc108d46a867c1f3bfc5a94e7330308</div>
           </div>
-          <p class="chk">Проверка целостности после скачивания:<br><code>sha256sum lemonovos-0.8.5-22.07.2026.iso</code></p>
+          <p class="chk">Проверка целостности после скачивания:<br><code>sha256sum lemonovos-tarn-x86_64.iso</code></p>
           <div class="dl-act">
             <button class="btn btn-main" type="button" id="main-download-btn" data-open="disclaimer-modal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square" aria-hidden="true" focusable="false"><path d="M21 15v6H3v-6"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>Скачать ISO</button>
             <a class="btn" href="https://t.me/lemonovos" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>Следить в Telegram</a>
@@ -803,7 +803,7 @@ section.is-on .boot .ln{animation:ln .01s linear forwards}
       <p>Продолжая загрузку, вы подтверждаете понимание того, что команда разработчиков не несет юридической ответственности за возможную потерю данных или нештатную работу оборудования. Рекомендуем сделать резервные копии важных файлов перед установкой ОС.</p>
     </div>
     <div class="dlg-act">
-      <a class="btn btn-main" href="https://download.lemonovos.com/lemonovos-0.8.5-22.07.2026.iso" data-close>Принимаю, скачать ISO</a>
+      <a class="btn btn-main" href="https://download.lemonovos.com/lemonovos-tarn-x86_64.iso" data-close>Принимаю, скачать ISO</a>
       <button class="btn" type="button" data-close>Отмена</button>
     </div>
   </div>
