@@ -1,0 +1,116 @@
+groups:
+  - name: "Гейминг и Развлечения"
+    description: "Все, чтобы превратить LemonovOS в игровую станцию."
+    critical: false
+    subgroups:
+      - name: "Lemonov Gaming"
+        description: "Полный набор: Steam, Wine, Proton, MangoHud и оптимизации."
+        packages:
+          - lemonovos-gaming
+      - name: "Эмуляторы и лаунчеры"
+        description: "Дополнительные инструменты для игроков."
+        packages:
+          - lutris
+          - heroic-games-launcher
+          - bottles
+
+  - name: "Интернет и Общение"
+    description: "Браузеры и мессенджеры."
+    critical: false
+    subgroups:
+      - name: "Браузеры"
+        description: "Выбери свой доступ в сеть."
+        packages:
+          - firefox
+          - chromium
+      - name: "Мессенджеры"
+        description: "Связь с миром."
+        packages:
+          - telegram-desktop
+          - discord
+
+  - name: "Работа с Медиа"
+    description: "Воспроизведение и создание контента."
+    critical: false
+    subgroups:
+      - name: "Плееры и Кодеки"
+        description: "Чтобы открывалось любое видео."
+        packages:
+          - vlc
+          - mpv
+          - gst-plugins-bad
+          - gst-plugins-ugly
+          - libdvdcss
+      - name: "Звук и Стриминг"
+        description: "Управление аудио и захват экрана."
+        packages:
+          - pavucontrol
+          - obs-studio
+      - name: "Графика и Офис"
+        description: "Базовый набор для работы."
+        packages:
+          - libreoffice-fresh
+          - gimp
+          - obsidian
+
+  - name: "Системные компоненты"
+    description: "Важные дополнения для железа и ядра."
+    critical: false
+    subgroups:
+      - name: "Разработка"
+        description: "Инструменты для компиляции и сборки софта."
+        packages:
+          - base-devel
+          - git
+      - name: "Низкоуровневые либы (32-бит)"
+        description: "Нужны для старых игр и Wine."
+        packages:
+          - lib32-giflib
+          - lib32-gnutls
+          - lib32-vulkan-icd-loader
+          - lib32-mesa
+      - name: "Поддержка железа и ФС"
+        description: "Драйверы дисков, флешек и периферии."
+        packages:
+          - exfatprogs
+          - bolt
+          - ntfs-3g
+          - bat
+
+  - name: "Продвинутая Сеть и Спасение"
+    description: "Инструменты для тех, кто знает, что делает."
+    critical: false
+    subgroups:
+      - name: "Сетевая диагностика и протоколы"
+        description: "Утилиты мониторинга, сканирования и удаленных туннелей."
+        packages:
+          - nmap
+          - tcpdump
+          - openconnect
+          - wireguard-tools
+      - name: "Восстановление"
+        description: "Если диск решил 'уйти'."
+        packages:
+          - testdisk
+          - ddrescue
+          - partclone
+
+  - name: "Консольный уголок (на любителя)"
+    description: "Терминальные штуки и утилиты."
+    critical: false
+    subgroups:
+      - name: "Мониторинг ресурсов"
+        description: "Красивый TUI-монитор системы."
+        packages:
+          - btop
+      - name: "Текстовые редакторы"
+        description: "Для правки конфигов руками."
+        packages:
+          - vim
+          - micro
+          - nano
+      - name: "Терминальное ретро"
+        description: "Lynx, IRC и прочее."
+        packages:
+          - lynx
+          - irssi
